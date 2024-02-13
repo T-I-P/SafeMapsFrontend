@@ -21,8 +21,9 @@ There are two separate repositories for managing the frontend and backend of the
 
 Branching Strategy:
 
-`main` - combined code from other branches _(cannot push code directly, need to create a pull request with at least one approved review)_
+`main` - This branch contains the combined code from other branches. Please note that direct code pushes are not permitted; instead, contributors must create a pull request _with at least one approved review_.
+
+When creating a new branch, adhere to the following convention: use `feature/<User Story Number>` for feature branches or `bugfix/<User Story Number>` if it is a bugfix branch.
 
 
-
->_Remember to always take a pull from the `main` branch before you start working on any feature_
+>_Remember to always take a pull from the `main` branch before you start working on any feature or bug_
