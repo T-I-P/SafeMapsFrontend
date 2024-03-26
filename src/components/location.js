@@ -33,11 +33,14 @@ const Location = ({setOffice}) =>{
         }
     };
 
-    return (<div>
-
-        <input value = {value} onChange={(e) => setValue(e.target.value)} disabled={!ready} placeholder="Search an address"/>
-        {renderSuggestions()}
-    </div>)
+    return (
+            <div className="location">
+                <center>
+                    <input value = {value} onChange={(e) => setValue(e.target.value)} disabled={!ready} placeholder="Search an address"/>
+                    {renderSuggestions()}
+                </center>
+            </div>
+    )
 
 }
 

@@ -43,7 +43,8 @@
 }
 
 .location-container{
-  flex: auto;
+  display: flex;
+  margin-left: 38%;
   margin-bottom: 5%;
 }
 

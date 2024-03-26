@@ -1,4 +1,4 @@
-import { GoogleMap, useLoadScript, Marker, MAP_PANE } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle} from '@react-google-maps/api';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import Location from './components/location';
@@ -100,7 +100,8 @@ const App = () => {
               center={center}
               onLoad={onLoad}
             >
-              <Marker position={center} />
+              {office && <div><Marker position={office}/> <Circle center={office} radius={15000}/></div>}
+
             </GoogleMap>
           </center>
         </div>
