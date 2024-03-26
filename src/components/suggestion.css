@@ -1,0 +1,13 @@
+.suggestion-container{
+
+        margin-bottom: 1px;
+        
+
+}
+.suggestion-container:hover{
+    cursor: pointer;
+}
+
+.suggestion-value{
+    border-color: black;
+}
