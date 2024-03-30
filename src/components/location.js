@@ -13,7 +13,7 @@ const Location = ({setOffice}) =>{
             return (
                 <div>
                     {data.map((suggestion, index) => (
-                            <Suggestion suggestion={suggestion} index={index} handleSelectSuggestion={handleSelectSuggestion}></Suggestion>
+                            <Suggestion key = {index} suggestion={suggestion} index={index} handleSelectSuggestion={handleSelectSuggestion}></Suggestion>
                     ))}
                 </div>
             );
