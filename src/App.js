@@ -49,9 +49,43 @@ const App = () => {
     console.log("Unable to retrieve your location");
   }
 
+  const fetchDirections = () => {
+    if (!office) {
+      return;
+    }
+  
+    const directionsService = new window.google.maps.DirectionsService();
+  
+    // Convert location object to string
+    const locationString = `${location.latitude}, ${location.longitude}`;
+  
+    directionsService.route(
+      {
+        origin: locationString,
+        destination: office,
+        travelMode: window.google.maps.TravelMode.WALKING,
+        provideRouteAlternatives: true
+      },
+      (response, status) => {
+        if (status === 'OK') {
+          // Create a new DirectionsRenderer for each route
+          console.log(response.routes)
+          response.routes.forEach((route) => {
+            const directionsRenderer = new window.google.maps.DirectionsRenderer({
+              map: mapRef.current,
+              directions: response,
+              routeIndex: response.routes.indexOf(route),
+            });
+          });
+        } else {
+          console.log('Directions request failed due to ' + status);
+        }
+      }
+    );
+  };
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyDq1ljbECXLB3qe8nFx0JCp0j98m7ep7zo",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
@@ -85,11 +119,11 @@ const App = () => {
           <center>
             <div className='location-container'>
 
-                <Location setOffice = {(position) => {
+                <Location key="origin" setOffice = {(position) => {
               setOffice(position)
               mapRef.current.panTo(position);
             }}/>
-                <Location setOffice = {(position) => {
+                <Location key = "destination" setOffice = {(position) => {
               setOffice(position)
               mapRef.current.panTo(position);
             }}/>
@@ -100,9 +134,12 @@ const App = () => {
               center={center}
               onLoad={onLoad}
             >
-              {office && <div><Marker position={office}/> <Circle center={office} radius={15000}/></div>}
+              {office && <div><Marker position={office}/> </div>}
 
             </GoogleMap>
+            <div>
+              <button onClick={fetchDirections}>Get Directions</button>
+            </div>
           </center>
         </div>
         }
