@@ -1,19 +1,18 @@
 import React from "react";
-import './suggestion.css'
+import "./suggestion.css";
 
-
-function Suggestion({suggestion, index, handleSelectSuggestion}){
-
-    
-    return (
+function Suggestion({ suggestion, index, handleSelectSuggestion }) {
+  return (
     <div className="suggestion-container">
-        <p className="suggestion-value" key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-            {suggestion.description}
-        </p>
+      <p
+        className="suggestion-value"
+        key={index}
+        onClick={() => handleSelectSuggestion(suggestion)}
+      >
+        {suggestion.description}
+      </p>
     </div>
-    )
-
-
+  );
 }
 
 export default Suggestion;
