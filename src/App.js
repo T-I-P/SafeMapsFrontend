@@ -33,7 +33,7 @@ const App = () => {
     const longitude = position.coords.longitude;
     console.log(position)
     setLocation({ latitude, longitude });
-    setSourceLocation('Your Location')
+    setSourceLocation(`Your Location`)
     setLoaded(true);
     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
     setMapContainerStyle({
