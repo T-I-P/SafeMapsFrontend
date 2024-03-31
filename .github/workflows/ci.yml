@@ -1,1 +1,7 @@
-name: prettire
+name: prettier
+
+on:
+  push:
+    branches:
+      - main
+      - master
