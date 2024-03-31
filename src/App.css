@@ -37,17 +37,16 @@
   }
 }
 
-
-.map{
-  margin-top: 5% ;
+.map {
+  margin-top: 5%;
 }
 
-.location-container{
+.location-container {
   display: flex;
   margin-left: 38%;
   margin-bottom: 5%;
 }
 
-.location{
+.location {
   margin-right: 2%;
 }
