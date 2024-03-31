@@ -16,6 +16,8 @@ const App = () => {
   const [center, setCenter] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destination, setDestination] = useState('');
+  const [crimes, setCrimes] = useState([]);
+  const [pathCoordinates, setPathCoordinates] = useState([]);
   const libraries = ['places'];
 
   function handleLocationClick() {
@@ -49,11 +51,33 @@ const App = () => {
     console.log("Unable to retrieve your location");
   }
 
-  const fetchDirections = () => {
+  const fetchDirections = async () => {
     if (!office) {
       return;
     }
   
+
+    const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      }),
+    });
+    console.log(response)
+    const crimeData = await response.json();
+    let newCrimes = [...crimes];
+    for (let i = 0; i < crimeData.data.length; i++) {
+      const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
+      newCrimes.push(temp);
+    }
+    setCrimes(newCrimes);
+    console.log(newCrimes);
+    console.log(crimes);
+    
     const directionsService = new window.google.maps.DirectionsService();
   
     // Convert location object to string
@@ -76,7 +100,15 @@ const App = () => {
               directions: response,
               routeIndex: response.routes.indexOf(route),
             });
+          // Log the coordinates of all the points along the path
+          const currentpathCoordinates = route.overview_path.map((latLng) => {
+            return { lat: latLng.lat(), lng: latLng.lng() };
           });
+          console.log(currentpathCoordinates);
+          setPathCoordinates([...pathCoordinates, currentpathCoordinates]);
+          });
+
+
         } else {
           console.log('Directions request failed due to ' + status);
         }
@@ -134,7 +166,7 @@ const App = () => {
               center={center}
               onLoad={onLoad}
             >
-              {office && <div><Marker position={office}/> </div>}
+              {office && <div><Marker position={office}/> {crimes.map((crime, idx) => <Marker key = {idx} position={crime} icon={{url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain", scaledSize: new window.google.maps.Size(15, 15)}} />) }  </div>}
 
             </GoogleMap>
             <div>
