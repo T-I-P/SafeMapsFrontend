@@ -5,3 +5,18 @@ on:
     branches:
       - main
       - master
+
+
+jobs:
+  check: code-formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+      - name: Install Prettier
+        run: npm install --save-dev prettier
+      - name: Run Prettier
+        run: npx prettier --check .
