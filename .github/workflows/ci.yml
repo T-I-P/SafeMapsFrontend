@@ -12,7 +12,7 @@ on:
 
 
 jobs:
-  check: code-formatting
+  check:
     runs-on: ubuntu-latest
 
     steps:
