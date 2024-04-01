@@ -27,6 +27,43 @@ const App = () => {
       console.log("Geolocation not supported");
     }
   }
+  useEffect(() => {
+
+      mapCrimeData();
+
+  }, [pathCoordinates]);
+
+
+  const mapCrimeData = async () => {
+
+    if(pathCoordinates.length === 0){return;}
+    //console.log(pathCoordinates)
+    console.log((pathCoordinates[0].length)/2)
+    const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        latitude: pathCoordinates[0][(pathCoordinates[0].length)/2].lat,
+        longitude: pathCoordinates[0][(pathCoordinates[0].length)/2].lng,
+        radius: 3.0,
+      }),
+    });
+    console.log(response)
+    const crimeData = await response.json();
+    let newCrimes = [...crimes];
+    console.log(crimeData)
+    for (let i = 0; i < crimeData.data.length; i++) {
+      const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
+      newCrimes.push(temp);
+    }
+    setCrimes([...crimes, ...newCrimes]);
+    console.log(newCrimes);
+    console.log(crimes);
+
+
+  }
 
   function success(position) {
     const latitude = position.coords.latitude;
@@ -56,28 +93,6 @@ const App = () => {
       return;
     }
   
-
-    const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      }),
-    });
-    console.log(response)
-    const crimeData = await response.json();
-    let newCrimes = [...crimes];
-    for (let i = 0; i < crimeData.data.length; i++) {
-      const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
-      newCrimes.push(temp);
-    }
-    setCrimes(newCrimes);
-    console.log(newCrimes);
-    console.log(crimes);
-    
     const directionsService = new window.google.maps.DirectionsService();
   
     // Convert location object to string
@@ -114,6 +129,8 @@ const App = () => {
         }
       }
     );
+
+
   };
 
   const { isLoaded, loadError } = useLoadScript({
