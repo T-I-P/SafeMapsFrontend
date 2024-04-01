@@ -36,31 +36,32 @@ const App = () => {
 
     if(pathCoordinates.length === 0){return;}
     //console.log(pathCoordinates)
-    console.log((pathCoordinates[0].length)/2)
-    const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        latitude: pathCoordinates[0][(pathCoordinates[0].length)/2].lat,
-        longitude: pathCoordinates[0][(pathCoordinates[0].length)/2].lng,
-        radius: 3.0,
-      }),
-    });
-    console.log(response)
-    const crimeData = await response.json();
-    let newCrimes = [...crimes];
-    console.log(crimeData)
-    for (let i = 0; i < crimeData.data.length; i++) {
-      const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
-      newCrimes.push(temp);
-    }
-    setCrimes([...crimes, ...newCrimes]);
-    console.log(newCrimes);
-    console.log(crimes);
+    for(var i = 0; i < pathCoordinates.length; i++){
+      console.log("==========================",(pathCoordinates[i].length)/2)
+      const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          latitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lat,
+          longitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lng,
+          radius: 3.0,
+        }),
+      });
+      console.log(response)
+      const crimeData = await response.json();
+      let newCrimes = [...crimes];
+      console.log(crimeData)
+      for (let i = 0; i < crimeData.data.length; i++) {
+        const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
+        newCrimes.push(temp);
+      }
+      setCrimes([...crimes, ...newCrimes]);
+      console.log(newCrimes);
+      console.log(crimes);
 
-
+  }
   }
 
   function success(position) {
