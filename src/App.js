@@ -6,6 +6,7 @@ import Location from "./components/location";
 
 const App = () => {
   const [office, setOffice] = useState(null);
+  const [destination, setDestination] = useState(null);
   const mapRef = useRef();
 
   const [location, setLocation] = useState(null);
@@ -13,7 +14,7 @@ const App = () => {
   const [loaded, setLoaded] = useState(false);
   const [center, setCenter] = useState(null);
   const [sourceLocation, setSourceLocation] = useState("");
-  const [destination, setDestination] = useState("");
+
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
   const libraries = ["places"];
@@ -26,17 +27,56 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    handleLocationClick();
+  }, []);
+  useEffect(() => {
+    mapCrimeData();
+  }, [pathCoordinates]);
+
+  const mapCrimeData = async () => {
+    if (pathCoordinates.length === 0) {
+      return;
+    }
+    //console.log(pathCoordinates)
+    for (var i = 0; i < pathCoordinates.length; i++) {
+      const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          latitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lat,
+          longitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lng,
+          radius: 3.0,
+        }),
+      });
+      const crimeData = await response.json();
+      let newCrimes = [...crimes];
+      for (let i = 0; i < crimeData.data.length; i++) {
+        const temp = {
+          lat: parseFloat(crimeData.data[i].lat),
+          lng: parseFloat(crimeData.data[i].lon),
+        };
+        newCrimes.push(temp);
+      }
+      setCrimes([...crimes, ...newCrimes]);
+    }
+  };
+
   function success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    console.log(position);
+
     setLocation({ latitude, longitude });
     setSourceLocation(`Your Location`);
     setLoaded(true);
-    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
     setMapContainerStyle({
-      width: "80vw",
-      height: "80vh",
+      width: "60vw",
+      height: "90vh",
     });
     setCenter({
       lat: latitude, // default latitude
@@ -53,46 +93,25 @@ const App = () => {
       return;
     }
 
-    const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      }),
-    });
-    console.log(response);
-    const crimeData = await response.json();
-    let newCrimes = [...crimes];
-    for (let i = 0; i < crimeData.data.length; i++) {
-      const temp = {
-        lat: parseFloat(crimeData.data[i].lat),
-        lng: parseFloat(crimeData.data[i].lon),
-      };
-      newCrimes.push(temp);
-    }
-    setCrimes(newCrimes);
-    console.log(newCrimes);
-    console.log(crimes);
-
     const directionsService = new window.google.maps.DirectionsService();
 
     // Convert location object to string
-    const locationString = `${location.latitude}, ${location.longitude}`;
+    let locationString = `${location.latitude}, ${location.longitude}`;
+    if (office !== null) {
+      locationString = `${office.lat}, ${office.lng}`;
+    }
+    const destinationString = `${destination.lat}, ${destination.lng}`;
 
     directionsService.route(
       {
         origin: locationString,
-        destination: office,
+        destination: destinationString,
         travelMode: window.google.maps.TravelMode.WALKING,
         provideRouteAlternatives: true,
       },
       (response, status) => {
         if (status === "OK") {
           // Create a new DirectionsRenderer for each route
-          console.log(response.routes);
           response.routes.forEach((route) => {
             const directionsRenderer =
               new window.google.maps.DirectionsRenderer({
@@ -104,7 +123,7 @@ const App = () => {
             const currentpathCoordinates = route.overview_path.map((latLng) => {
               return { lat: latLng.lat(), lng: latLng.lng() };
             });
-            console.log(currentpathCoordinates);
+
             setPathCoordinates([...pathCoordinates, currentpathCoordinates]);
           });
         } else {
@@ -132,31 +151,34 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button onClick={handleLocationClick}>Get location</button>
+    <div className="app-container">
+      <div className="location-container">
+        <h1 className="logo-heading">SafeMap</h1>
+        <div className="location-input-container">
+          <Location
+            key="origin"
+            setOffice={(position) => {
+              setOffice(position);
+              mapRef.current.panTo(position);
+            }}
+            placeholder={"Enter Source Location"}
+          />
+          <Location
+            key="destination"
+            setOffice={(position) => {
+              setDestination(position);
+            }}
+            placeholder={"Enter Destination Location"}
+          />
+        </div>
+
+        <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
       <div>
         {loaded && (
           <div className="map">
             <center>
-              <div className="location-container">
-                <Location
-                  key="origin"
-                  setOffice={(position) => {
-                    setOffice(position);
-                    mapRef.current.panTo(position);
-                  }}
-                />
-                <Location
-                  key="destination"
-                  setOffice={(position) => {
-                    setOffice(position);
-                    mapRef.current.panTo(position);
-                  }}
-                />
-              </div>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={10}
@@ -179,9 +201,6 @@ const App = () => {
                   </div>
                 )}
               </GoogleMap>
-              <div>
-                <button onClick={fetchDirections}>Get Directions</button>
-              </div>
             </center>
           </div>
         )}

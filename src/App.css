@@ -13,6 +13,10 @@
   }
 }
 
+.app-container {
+  display: flex;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -42,11 +46,21 @@
 }
 
 .location-container {
-  display: flex;
-  margin-left: 38%;
-  margin-bottom: 5%;
+  display: block;
+  margin-right: 10%;
+  background-color: #282c34;
+  height: 100vh;
+  padding: 5%;
 }
 
 .location {
   margin-right: 2%;
+}
+
+.location-input-container {
+  padding-bottom: 5%;
+}
+
+.logo-heading {
+  color: whitesmoke;
 }
