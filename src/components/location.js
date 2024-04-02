@@ -4,7 +4,7 @@ import usePlacesAutoComplete, {
 } from "use-places-autocomplete";
 import Suggestion from "./suggestion";
 
-const Location = ({ setOffice }) => {
+const Location = ({ setOffice, placeholder }) => {
   const {
     ready,
     value,
@@ -50,7 +50,7 @@ const Location = ({ setOffice }) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           disabled={!ready}
-          placeholder="Search an address"
+          placeholder={placeholder}
         />
         {renderSuggestions()}
       </center>
