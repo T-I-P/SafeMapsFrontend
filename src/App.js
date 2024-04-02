@@ -14,7 +14,7 @@ const App = () => {
   const [loaded, setLoaded] = useState(false);
   const [center, setCenter] = useState(null);
   const [sourceLocation, setSourceLocation] = useState("");
-  
+
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
   const libraries = ["places"];
@@ -27,40 +27,44 @@ const App = () => {
     }
   }
 
-  useEffect(() => {handleLocationClick()}, []);
   useEffect(() => {
-
-      mapCrimeData();
-
+    handleLocationClick();
+  }, []);
+  useEffect(() => {
+    mapCrimeData();
   }, [pathCoordinates]);
 
-
   const mapCrimeData = async () => {
-
-    if(pathCoordinates.length === 0){return;}
+    if (pathCoordinates.length === 0) {
+      return;
+    }
     //console.log(pathCoordinates)
-    for(var i = 0; i < pathCoordinates.length; i++){
-      const response = await fetch('http://127.0.0.1:3000/fetchCrimeData', {
-        method: 'POST',
+    for (var i = 0; i < pathCoordinates.length; i++) {
+      const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          latitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lat,
-          longitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lng,
+          latitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lat,
+          longitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lng,
           radius: 3.0,
         }),
       });
       const crimeData = await response.json();
       let newCrimes = [...crimes];
       for (let i = 0; i < crimeData.data.length; i++) {
-        const temp = { lat: parseFloat(crimeData.data[i].lat), lng: parseFloat(crimeData.data[i].lon) };
+        const temp = {
+          lat: parseFloat(crimeData.data[i].lat),
+          lng: parseFloat(crimeData.data[i].lon),
+        };
         newCrimes.push(temp);
       }
       setCrimes([...crimes, ...newCrimes]);
-
-  }
-  }
+    }
+  };
 
   function success(position) {
     const latitude = position.coords.latitude;
@@ -88,12 +92,12 @@ const App = () => {
     if (!office) {
       return;
     }
-  
+
     const directionsService = new window.google.maps.DirectionsService();
 
     // Convert location object to string
     let locationString = `${location.latitude}, ${location.longitude}`;
-    if(office !== null){
+    if (office !== null) {
       locationString = `${office.lat}, ${office.lng}`;
     }
     const destinationString = `${destination.lat}, ${destination.lng}`;
@@ -127,8 +131,6 @@ const App = () => {
         }
       },
     );
-
-
   };
 
   const { isLoaded, loadError } = useLoadScript({
@@ -149,37 +151,34 @@ const App = () => {
   };
 
   return (
-    <div className='app-container'>
-      
+    <div className="app-container">
       <div className="location-container">
-        <h1 className='logo-heading'>SafeMap</h1>
-        <div className='location-input-container' >
-                <Location
-                  key="origin"
-                  setOffice={(position) => {
-                    setOffice(position);
-                    mapRef.current.panTo(position);
-                  }}
-                  placeholder={"Enter Source Location"}
-                />
-                <Location
-                  key="destination"
-                  setOffice={(position) => {
-                    setDestination(position);
-                  }}
-                  placeholder={"Enter Destination Location"}
-                />
-          </div>
-          
-          <button onClick={fetchDirections}>Get Directions</button>
+        <h1 className="logo-heading">SafeMap</h1>
+        <div className="location-input-container">
+          <Location
+            key="origin"
+            setOffice={(position) => {
+              setOffice(position);
+              mapRef.current.panTo(position);
+            }}
+            placeholder={"Enter Source Location"}
+          />
+          <Location
+            key="destination"
+            setOffice={(position) => {
+              setDestination(position);
+            }}
+            placeholder={"Enter Destination Location"}
+          />
+        </div>
 
+        <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
       <div>
         {loaded && (
           <div className="map">
             <center>
-
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={10}
@@ -202,7 +201,6 @@ const App = () => {
                   </div>
                 )}
               </GoogleMap>
-
             </center>
           </div>
         )}

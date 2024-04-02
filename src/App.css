@@ -13,7 +13,7 @@
   }
 }
 
-.app-container{
+.app-container {
   display: flex;
 }
 
@@ -57,11 +57,10 @@
   margin-right: 2%;
 }
 
-
-.location-input-container{
+.location-input-container {
   padding-bottom: 5%;
 }
 
-.logo-heading{
+.logo-heading {
   color: whitesmoke;
 }
