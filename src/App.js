@@ -17,7 +17,7 @@ const App = () => {
   const [crimesDetected, setCrimesDetected] = useState(false);
   const [routes, setRoutes] = useState([]);
   const [routesContainer, setRoutesContainer] = useState([]);
-  
+
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
   const libraries = ["places"];
@@ -37,34 +37,33 @@ const App = () => {
     mapCrimeData();
   }, [pathCoordinates]);
 
-
   const checkSafety = () => {
-
     console.log(routes, crimes);
     const R = 6371; // Radius of the earth in km
     const maxDistance = 5; // Max distance in km
-  
-    let crimesLst = []
-    for(let path of routes){  
+
+    let crimesLst = [];
+    for (let path of routes) {
       let currCrimes = 0;
       for (let i = 0; i < path.length; i++) {
         const lat1 = path[i].lat;
         const lon1 = path[i].lng;
-    
+
         for (let j = 0; j < crimes.length; j++) {
           const lat2 = crimes[j].lat;
           const lon2 = crimes[j].lng;
-    
+
           const dLat = deg2rad(lat2 - lat1);
           const dLon = deg2rad(lon2 - lon1);
-          const a = 
+          const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-            Math.sin(dLon / 2) * Math.sin(dLon / 2)
-          ; 
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+            Math.cos(deg2rad(lat1)) *
+              Math.cos(deg2rad(lat2)) *
+              Math.sin(dLon / 2) *
+              Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
           const distance = R * c; // Distance in km
-          
+
           if (distance <= maxDistance) {
             currCrimes++;
           }
@@ -75,19 +74,18 @@ const App = () => {
     console.log(crimesLst);
     const safestRouteIndex = crimesLst.indexOf(Math.min(...crimesLst));
     plotSafestRoute(safestRouteIndex);
-  }
-  
+  };
 
   const plotSafestRoute = async (safestIndex) => {
     if (!office) {
       return;
     }
-  
+
     const directionsService = new window.google.maps.DirectionsService();
 
     // Convert location object to string
     let locationString = `${location.latitude}, ${location.longitude}`;
-    if(office !== null){
+    if (office !== null) {
       locationString = `${office.lat}, ${office.lng}`;
     }
     const destinationString = `${destination.lat}, ${destination.lng}`;
@@ -103,11 +101,13 @@ const App = () => {
         if (status === "OK") {
           // Create a new DirectionsRenderer for each route
           response.routes.forEach((route) => {
-
-            setRoutesContainer((routesContainer) => [...routesContainer, route]);
+            setRoutesContainer((routesContainer) => [
+              ...routesContainer,
+              route,
+            ]);
             let color = "red";
             console.log(response.routes.indexOf(route), safestIndex);
-            if(response.routes.indexOf(route) === safestIndex){
+            if (response.routes.indexOf(route) === safestIndex) {
               color = "green";
             }
             const directionsRenderer =
@@ -117,15 +117,13 @@ const App = () => {
                 routeIndex: response.routes.indexOf(route),
                 polylineOptions: { strokeColor: color },
               });
-          })
+          });
         } else {
           console.log("Directions request failed due to " + status);
         }
       },
     );
-
   };
-
 
   function deg2rad(deg) {
     return deg * (Math.PI / 180);
@@ -143,8 +141,10 @@ const App = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          latitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lat,
-          longitude: pathCoordinates[i][parseInt((pathCoordinates[i].length)/2)].lng,
+          latitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lat,
+          longitude:
+            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lng,
           radius: 6.0,
         }),
       });
@@ -208,8 +208,10 @@ const App = () => {
         if (status === "OK") {
           // Create a new DirectionsRenderer for each route
           response.routes.forEach((route) => {
-
-            setRoutesContainer((routesContainer) => [...routesContainer, route]);
+            setRoutesContainer((routesContainer) => [
+              ...routesContainer,
+              route,
+            ]);
             const directionsRenderer =
               new window.google.maps.DirectionsRenderer({
                 map: mapRef.current,
@@ -221,19 +223,17 @@ const App = () => {
             const currentpathCoordinates = route.overview_path.map((latLng) => {
               return { lat: latLng.lat(), lng: latLng.lng() };
             });
-            
+
             setRoutes((routes) => [...routes, currentpathCoordinates]);
             setPathCoordinates([...pathCoordinates, currentpathCoordinates]);
-          })
+          });
         } else {
           console.log("Directions request failed due to " + status);
         }
       },
     );
-    
-    
-    setCrimesDetected(true);
 
+    setCrimesDetected(true);
   };
 
   const { isLoaded, loadError } = useLoadScript({
@@ -256,27 +256,29 @@ const App = () => {
   return (
     <div className="app-container">
       <div className="location-container">
-        <h1 className='logo-heading'>SafeMap</h1>
-        <div className='location-input-container' >
-                <Location
-                  key="origin"
-                  setOffice={(position) => {
-                    setOffice(position);
-                    mapRef.current.panTo(position);
-                  }}
-                  placeholder={"Enter Source Location"}
-                />
-                <Location
-                  key="destination"
-                  setOffice={(position) => {
-                    setDestination(position);
-                  }}
-                  placeholder={"Enter Destination Location"}
-                />
-          </div>
-          
-          <button onClick={fetchDirections}>Get Directions</button>
-          <button onClick={checkSafety} disabled={!crimesDetected} >Get Safest Route</button>
+        <h1 className="logo-heading">SafeMap</h1>
+        <div className="location-input-container">
+          <Location
+            key="origin"
+            setOffice={(position) => {
+              setOffice(position);
+              mapRef.current.panTo(position);
+            }}
+            placeholder={"Enter Source Location"}
+          />
+          <Location
+            key="destination"
+            setOffice={(position) => {
+              setDestination(position);
+            }}
+            placeholder={"Enter Destination Location"}
+          />
+        </div>
+
+        <button onClick={fetchDirections}>Get Directions</button>
+        <button onClick={checkSafety} disabled={!crimesDetected}>
+          Get Safest Route
+        </button>
 
         <button onClick={fetchDirections}>Get Directions</button>
       </div>
