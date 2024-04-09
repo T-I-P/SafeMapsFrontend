@@ -1,49 +1,46 @@
-import React from  'react';
-import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate} from 'react-router-dom';
+import React from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    const responseGoogle = (response) => {
-      if (response.profileObj) { // if login is successful
-        navigate('/app'); // redirect to App component
-      }
-      navigate('/app');
+  const responseGoogle = (response) => {
+    if (response.profileObj) {
+      // if login is successful
+      navigate("/app"); // redirect to App component
     }
+    navigate("/app");
+  };
 
-    return (
-        <div>
-        <center>
+  return (
+    <div>
+      <center>
         <h1>Login</h1>
         <form>
-            <label>
+          <label>
             Username:
             <input type="text" name="username" />
-            </label>
-            <br />
-            <label>
+          </label>
+          <br />
+          <label>
             Password:
             <input type="password" name="password" />
-            </label>
-            <br />
-            <button type="submit">Login</button>
+          </label>
+          <br />
+          <button type="submit">Login</button>
         </form>
-        
-            Or
-            <br />
-            <GoogleLogin
-                onSuccess={responseGoogle}
-                onError={() => {
-                    console.log('Login Failed');
-                }}
-            />
-        </center>
-
-        </div>
-    );
-
+        Or
+        <br />
+        <GoogleLogin
+          onSuccess={responseGoogle}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+      </center>
+    </div>
+  );
 };
 
 export default Login;
