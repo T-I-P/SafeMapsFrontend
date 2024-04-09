@@ -217,7 +217,7 @@ const App = () => {
                 map: mapRef.current,
                 directions: response,
                 routeIndex: response.routes.indexOf(route),
-                polylineOptions: { strokeColor: "red" },
+                polylineOptions: { strokeColor: "blue" },
               });
             // Log the coordinates of all the points along the path
             const currentpathCoordinates = route.overview_path.map((latLng) => {
@@ -279,8 +279,6 @@ const App = () => {
         <button onClick={checkSafety} disabled={!crimesDetected}>
           Get Safest Route
         </button>
-
-        <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
       <div>
