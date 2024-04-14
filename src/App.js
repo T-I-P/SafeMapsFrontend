@@ -5,6 +5,7 @@ import "./App.css";
 import Location from "./components/location";
 import NavigationBar from "./components/navbar";
 import { Nav } from "react-bootstrap";
+import Loader from "react-js-loader";
 
 const App = () => {
   const [office, setOffice] = useState(null);
@@ -21,9 +22,11 @@ const App = () => {
   const [crimesDetected, setCrimesDetected] = useState(false);
   const [routes, setRoutes] = useState([]);
   const [routesContainer, setRoutesContainer] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
+  const [progress, setProgress] = useState(0);
   const libraries = ["places"];
 
   function handleLocationClick() {
@@ -176,8 +179,10 @@ const App = () => {
           await new Promise((resolve) => setTimeout(resolve, 3000));
         }
       }
+      setProgress(prevProgress => prevProgress + 1);
     }
     setCrimesDetected(true);
+    setLoader(false);
   };
 
   function success(position) {
@@ -206,6 +211,8 @@ const App = () => {
     if (!office) {
       return;
     }
+
+    setLoader(true)
 
     const directionsService = new window.google.maps.DirectionsService();
 
@@ -298,6 +305,7 @@ const App = () => {
           <button onClick={checkSafety} disabled={!crimesDetected}>
             Get Safest Route
           </button>
+          {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />}
         </div>
 
         <div>
