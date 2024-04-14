@@ -3,16 +3,20 @@ import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle} from '@react-googl
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
 import Location from "./components/location";
+import NavigationBar from "./components/navbar";
+import { Nav } from "react-bootstrap";
 
 const App = () => {
   const [office, setOffice] = useState(null);
   const [destination, setDestination] = useState(null);
+
   const mapRef = useRef();
 
   const [location, setLocation] = useState(null);
   const [mapContainerStyle, setMapContainerStyle] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [center, setCenter] = useState(null);
+  const [Circle, setCircle] = useState(null);
   const [sourceLocation, setSourceLocation] = useState("");
   const [crimesDetected, setCrimesDetected] = useState(false);
   const [routes, setRoutes] = useState([]);
@@ -109,14 +113,14 @@ const App = () => {
             console.log(response.routes.indexOf(route), safestIndex);
             if (response.routes.indexOf(route) === safestIndex) {
               color = "green";
+              const directionsRenderer =
+                new window.google.maps.DirectionsRenderer({
+                  map: mapRef.current,
+                  directions: response,
+                  routeIndex: response.routes.indexOf(route),
+                  polylineOptions: { strokeColor: color },
+                });
             }
-            const directionsRenderer =
-              new window.google.maps.DirectionsRenderer({
-                map: mapRef.current,
-                directions: response,
-                routeIndex: response.routes.indexOf(route),
-                polylineOptions: { strokeColor: color },
-              });
           });
         } else {
           console.log("Directions request failed due to " + status);
@@ -133,6 +137,10 @@ const App = () => {
     if (pathCoordinates.length === 0) {
       return;
     }
+    setCircle({
+      lat: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lat, // default latitude
+      lng: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lng, // default longitude
+    });
     //console.log(pathCoordinates)
     for (var i = 0; i < pathCoordinates.length; i++) {
       const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
@@ -217,7 +225,7 @@ const App = () => {
                 map: mapRef.current,
                 directions: response,
                 routeIndex: response.routes.indexOf(route),
-                polylineOptions: { strokeColor: "blue" },
+                polylineOptions: { strokeColor: "red" },
               });
             // Log the coordinates of all the points along the path
             const currentpathCoordinates = route.overview_path.map((latLng) => {
@@ -254,62 +262,65 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
-      <div className="location-container">
-        <h1 className="logo-heading">SafeMap</h1>
-        <div className="location-input-container">
-          <Location
-            key="origin"
-            setOffice={(position) => {
-              setOffice(position);
-              mapRef.current.panTo(position);
-            }}
-            placeholder={"Enter Source Location"}
-          />
-          <Location
-            key="destination"
-            setOffice={(position) => {
-              setDestination(position);
-            }}
-            placeholder={"Enter Destination Location"}
-          />
+    <div>
+      <NavigationBar />
+      <div className="app-container">
+        <div className="location-container">
+          <h1 className="logo-heading">SafeMap</h1>
+          <div className="location-input-container">
+            <Location
+              key="origin"
+              setOffice={(position) => {
+                setOffice(position);
+                mapRef.current.panTo(position);
+              }}
+              placeholder={"Enter Source Location"}
+            />
+            <Location
+              key="destination"
+              setOffice={(position) => {
+                setDestination(position);
+              }}
+              placeholder={"Enter Destination Location"}
+            />
+          </div>
+
+          <button onClick={fetchDirections}>Get Directions</button>
+          <button onClick={checkSafety} disabled={!crimesDetected}>
+            Get Safest Route
+          </button>
         </div>
 
-        <button onClick={fetchDirections}>Get Directions</button>
-        <button onClick={checkSafety} disabled={!crimesDetected}>
-          Get Safest Route
-        </button>
-      </div>
-
-      <div>
-        {loaded && (
-          <div className="map">
-            <center>
-              <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                zoom={10}
-                center={center}
-                onLoad={onLoad}
-              >
-                {office && (
-                  <div>
-                    <Marker position={office} />{" "}
-                    {crimes.map((crime, idx) => (
-                      <Marker
-                        key={idx}
-                        position={crime}
-                        icon={{
-                          url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
-                          scaledSize: new window.google.maps.Size(15, 15),
-                        }}
-                      />
-                    ))}{" "}
-                  </div>
-                )}
-              </GoogleMap>
-            </center>
-          </div>
-        )}
+        <div>
+          {loaded && (
+            <div className="map">
+              <center>
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  zoom={10}
+                  center={center}
+                  onLoad={onLoad}
+                >
+                  {office && (
+                    <div>
+                      <Marker position={office} />{" "}
+                      {crimes.map((crime, idx) => (
+                        <Marker
+                          key={idx}
+                          position={crime}
+                          icon={{
+                            url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
+                            scaledSize: new window.google.maps.Size(15, 15),
+                          }}
+                        />
+                      ))}{" "}
+                    </div>
+                  )}
+                </GoogleMap>
+              </center>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
