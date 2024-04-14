@@ -21,7 +21,7 @@ const Login = () => {
           <h1>Login</h1>
           <form>
             <label>
-              Username :  
+              Username :
               <input type="text" name="username" />
             </label>
             <br />
@@ -32,10 +32,10 @@ const Login = () => {
             <br />
             <button type="submit">Login</button>
           </form>
-          <br/>
+          <br />
           Or
           <br />
-          <br/>
+          <br />
           <GoogleLogin
             onSuccess={responseGoogle}
             onError={() => {

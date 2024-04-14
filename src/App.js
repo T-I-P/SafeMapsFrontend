@@ -3,13 +3,13 @@ import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle} from '@react-googl
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
 import Location from "./components/location";
-import NavigationBar from './components/navbar';
-import { Nav } from 'react-bootstrap';
+import NavigationBar from "./components/navbar";
+import { Nav } from "react-bootstrap";
 
 const App = () => {
   const [office, setOffice] = useState(null);
   const [destination, setDestination] = useState(null);
-  
+
   const mapRef = useRef();
 
   const [location, setLocation] = useState(null);
@@ -114,14 +114,13 @@ const App = () => {
             if (response.routes.indexOf(route) === safestIndex) {
               color = "green";
               const directionsRenderer =
-              new window.google.maps.DirectionsRenderer({
-                map: mapRef.current,
-                directions: response,
-                routeIndex: response.routes.indexOf(route),
-                polylineOptions: { strokeColor: color },
-              });
+                new window.google.maps.DirectionsRenderer({
+                  map: mapRef.current,
+                  directions: response,
+                  routeIndex: response.routes.indexOf(route),
+                  polylineOptions: { strokeColor: color },
+                });
             }
-
           });
         } else {
           console.log("Directions request failed due to " + status);
@@ -304,7 +303,6 @@ const App = () => {
                 >
                   {office && (
                     <div>
-                      
                       <Marker position={office} />{" "}
                       {crimes.map((crime, idx) => (
                         <Marker
