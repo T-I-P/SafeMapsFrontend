@@ -1,0 +1,33 @@
+.navbar-container{
+
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navlink-1{
+    color: white;
+}
+
+.navlink-2{
+    color: white;
+    margin-right:20px;
+}
+
+.navlink-3{
+    color: white;
+    margin-right:20px;
+}
+.navlink-4{
+    color: white;
+}
+
+.navlink-1,
+.navlink-2,
+.navlink-3,
+.navlink-4 {
+  text-decoration: none;
+}
