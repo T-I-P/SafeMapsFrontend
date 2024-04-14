@@ -60,8 +60,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const responseGoogle = (response) => {
-    console.log(response);
-  };
+    if (response.profileObj) {
+        // if login is successful
+        navigate("/app"); // redirect to App component
+      }
+      navigate("/app");
+    };
 
   const handleSignUpClick = () => {
     //will move to the signup.js when sign up button is called
@@ -108,6 +112,4 @@ const Login = () => {
       </div>
     </div>
   );
-};
-
-export default Login;
+	
