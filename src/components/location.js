@@ -3,8 +3,7 @@ import usePlacesAutoComplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import Suggestion from "./suggestion";
-import React from 'react';
-
+import React from "react";
 
 const Location = ({ setOffice, placeholder }) => {
   const {

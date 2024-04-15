@@ -6,10 +6,9 @@ import Location from "./components/location";
 import NavigationBar from "./components/navbar";
 import { Nav } from "react-bootstrap";
 import Loader from "react-js-loader";
-import React from 'react';
+import React from "react";
 import MapComponent from "./components/MapComponent";
 import LocationInput from "./components/LocationInput";
-
 
 const App = () => {
   const [office, setOffice] = useState(null);
@@ -42,7 +41,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    handleLocationClick(); 
+    handleLocationClick();
   }, []);
   useEffect(() => {
     mapCrimeData();
@@ -281,29 +280,30 @@ const App = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <NavigationBar />
       <div className="app-container">
-        <div className="location-container" style={{ textAlign: 'center'}}>
-          <h1 style={{ margin: 0 , color: 'white', paddingBottom: '2vw'}}>SafeMap</h1>
-          
+        <div className="location-container" style={{ textAlign: "center" }}>
+          <h1 style={{ margin: 0, color: "white", paddingBottom: "2vw" }}>
+            SafeMap
+          </h1>
 
           <LocationInput
-              setOffice={setOffice}
-              setDestination={setDestination}
-              fetchDirections={fetchDirections}
-              checkSafety={checkSafety}
-              crimesDetected={crimesDetected}
-              loader={loader}
-              progress={progress}
-              pathCoordinates={pathCoordinates}
+            setOffice={setOffice}
+            setDestination={setDestination}
+            fetchDirections={fetchDirections}
+            checkSafety={checkSafety}
+            crimesDetected={crimesDetected}
+            loader={loader}
+            progress={progress}
+            pathCoordinates={pathCoordinates}
           />
           {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
         </div>
 
-        <div style={{ flexGrow: 1, width: '100%' }}>
-            {loaded && (
-              <div className="map">
+        <div style={{ flexGrow: 1, width: "100%" }}>
+          {loaded && (
+            <div className="map">
               <center>
                 <MapComponent
                   mapContainerStyle={mapContainerStyle}
@@ -323,7 +323,6 @@ const App = () => {
     //   <div className="app-container">
     //     <div className="location-container" style={{ textAlign: 'center'}}>
     //       <h1 style={{ margin: 0 , color: 'white', paddingBottom: '2vw'}}>SafeMap</h1>
-          
 
     //       <LocationInput
     //           setOffice={setOffice}
