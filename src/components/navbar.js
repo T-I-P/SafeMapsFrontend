@@ -7,22 +7,30 @@ import React from "react";
 
 function NavigationBar() {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
-      <Container className="navbar-container">
+    <Navbar bg="dark" data-bs-theme="dark" expand="lg">
+      {/* <Container className="navbar-container"> */}
+      <Container>
         <Navbar.Brand className="navlink-1" href="#home">
           Home
         </Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link className="navlink-2" href="#home">
-            Home Safety
-          </Nav.Link>
-          <Nav.Link className="navlink-3" href="#features">
-            Route Safety
-          </Nav.Link>
-          <Nav.Link className="navlink-4" href="#pricing">
-            Account
-          </Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            {/* Empty div to push the nav items to the right */}
+          </Nav>
+          <Nav>
+            <Nav.Link className="navlink-2" href="#home">
+              Home Safety
+            </Nav.Link>
+            <Nav.Link className="navlink-3" href="#features">
+              Route Safety
+            </Nav.Link>
+            <Nav.Link className="navlink-4" href="#pricing">
+              Account
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
