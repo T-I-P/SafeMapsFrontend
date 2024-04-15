@@ -305,7 +305,12 @@ const App = () => {
             Get Safest Route
           </button>
           {loader && (
-            <progress value={progress} max={pathCoordinates[0].length} />
+            <div>
+              <center>
+              <progress  value={progress} max={pathCoordinates[0].length} />
+              <span className='progress-text'>{(progress / pathCoordinates[0].length * 100).toFixed(0)}%</span>
+              </center>
+            </div>
           )}
           {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
         </div>
