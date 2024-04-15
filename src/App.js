@@ -6,6 +6,8 @@ import Location from "./components/location";
 import NavigationBar from "./components/navbar";
 import { Nav } from "react-bootstrap";
 import Loader from "react-js-loader";
+import React from 'react';
+
 
 const App = () => {
   const [office, setOffice] = useState(null);
