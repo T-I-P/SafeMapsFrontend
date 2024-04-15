@@ -145,6 +145,7 @@ const App = () => {
       lng: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lng, // default longitude
     });
     //console.log(pathCoordinates)
+    setLoader(true);
     for (let i = 0; i < pathCoordinates.length; i++) {
       for (let j = 0; j < pathCoordinates[i].length; j += 10) {
         console.log("========================", j, pathCoordinates[i][j]);
@@ -178,8 +179,8 @@ const App = () => {
         } else {
           await new Promise((resolve) => setTimeout(resolve, 3000));
         }
+        setProgress((prevProgress) => prevProgress + 10);
       }
-      setProgress(prevProgress => prevProgress + 1);
     }
     setCrimesDetected(true);
     setLoader(false);
@@ -211,8 +212,6 @@ const App = () => {
     if (!office) {
       return;
     }
-
-    setLoader(true)
 
     const directionsService = new window.google.maps.DirectionsService();
 
@@ -305,7 +304,10 @@ const App = () => {
           <button onClick={checkSafety} disabled={!crimesDetected}>
             Get Safest Route
           </button>
-          {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />}
+          {loader && (
+            <progress value={progress} max={pathCoordinates[0].length} />
+          )}
+          {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
         </div>
 
         <div>
