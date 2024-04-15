@@ -307,8 +307,10 @@ const App = () => {
           {loader && (
             <div>
               <center>
-              <progress  value={progress} max={pathCoordinates[0].length} />
-              <span className='progress-text'>{(progress / pathCoordinates[0].length * 100).toFixed(0)}%</span>
+                <progress value={progress} max={pathCoordinates[0].length} />
+                <span className="progress-text">
+                  {((progress / pathCoordinates[0].length) * 100).toFixed(0)}%
+                </span>
               </center>
             </div>
           )}
