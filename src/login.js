@@ -8,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const responseGoogle = (response) => {
-  if (response.profileObj) {
+    if (response.profileObj) {
       // if login is successful
       navigate("/app"); // redirect to App component
     }
