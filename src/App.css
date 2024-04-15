@@ -15,6 +15,8 @@
 
 .app-container {
   display: flex;
+  flex-direction: row;
+  height: 100vh;
 }
 
 .App-header {
@@ -42,15 +44,28 @@
 }
 
 .map {
-  margin-top: 5%;
+  flex-grow: 1;
+  width: 100%;
+  margin-top: 3%;
+  padding: 0;
+  /* margin-top: 5%;
+  margin-left: 5%; */
+  width: 100%;
 }
 
 .location-container {
-  display: block;
-  margin-right: 10%;
+  display: flex;
+  flex-direction: column;
   background-color: #282c34;
-  height: 100vh;
-  padding: 5%;
+  /* padding: 5%; */
+  width: 30%;
+  height: 100%;
+
+  /* display: block; */
+  /* margin-right: 10%; */
+  
+  /* height: 100vh; */
+  /* padding: 5%; */
 }
 
 .location {
@@ -63,4 +78,8 @@
 
 .logo-heading {
   color: whitesmoke;
+}
+
+body {
+  margin: 0; /* Remove default margin */
 }
