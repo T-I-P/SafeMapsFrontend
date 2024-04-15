@@ -5,6 +5,7 @@ import "./App.css";
 import Location from "./components/location";
 import NavigationBar from "./components/navbar";
 import { Nav } from "react-bootstrap";
+import Loader from "react-js-loader";
 
 const App = () => {
   const [office, setOffice] = useState(null);
@@ -21,9 +22,11 @@ const App = () => {
   const [crimesDetected, setCrimesDetected] = useState(false);
   const [routes, setRoutes] = useState([]);
   const [routesContainer, setRoutesContainer] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
+  const [progress, setProgress] = useState(0);
   const libraries = ["places"];
 
   function handleLocationClick() {
@@ -142,31 +145,45 @@ const App = () => {
       lng: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lng, // default longitude
     });
     //console.log(pathCoordinates)
-    for (var i = 0; i < pathCoordinates.length; i++) {
-      const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          latitude:
-            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lat,
-          longitude:
-            pathCoordinates[i][parseInt(pathCoordinates[i].length / 2)].lng,
-          radius: 6.0,
-        }),
-      });
-      const crimeData = await response.json();
-      let newCrimes = [...crimes];
-      for (let i = 0; i < crimeData.data.length; i++) {
-        const temp = {
-          lat: parseFloat(crimeData.data[i].lat),
-          lng: parseFloat(crimeData.data[i].lon),
-        };
-        newCrimes.push(temp);
+    setLoader(true);
+    for (let i = 0; i < pathCoordinates.length; i++) {
+      for (let j = 0; j < pathCoordinates[i].length; j += 10) {
+        console.log("========================", j, pathCoordinates[i][j]);
+        const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            latitude: pathCoordinates[i][j].lat,
+            longitude: pathCoordinates[i][j].lng,
+            radius: 0.02,
+          }),
+        });
+        const crimeData = await response.json();
+        let newCrimes = [...crimes];
+
+        console.log(j, crimeData);
+        if (crimeData.data !== undefined) {
+          for (let k = 0; k < crimeData.data.length; k++) {
+            const temp = {
+              lat: parseFloat(crimeData.data[k].lat),
+              lng: parseFloat(crimeData.data[k].lon),
+            };
+            newCrimes.push(temp);
+          }
+        }
+        setCrimes((prevCrimes) => [...prevCrimes, ...newCrimes]);
+        if (j > 17) {
+          await new Promise((resolve) => setTimeout(resolve, 6000));
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+        }
+        setProgress((prevProgress) => prevProgress + 10);
       }
-      setCrimes([...crimes, ...newCrimes]);
     }
+    setCrimesDetected(true);
+    setLoader(false);
   };
 
   function success(position) {
@@ -240,8 +257,6 @@ const App = () => {
         }
       },
     );
-
-    setCrimesDetected(true);
   };
 
   const { isLoaded, loadError } = useLoadScript({
@@ -289,6 +304,10 @@ const App = () => {
           <button onClick={checkSafety} disabled={!crimesDetected}>
             Get Safest Route
           </button>
+          {loader && (
+            <progress value={progress} max={pathCoordinates[0].length} />
+          )}
+          {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
         </div>
 
         <div>
