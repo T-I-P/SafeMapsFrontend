@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import LogoSafeMap1 from "./LogoSafeMap1.png";
 import LogoSafeMapWritten from "./LogoWritten.png";
 
-
 const Login = () => {
   const navigate = useNavigate();
 
@@ -63,7 +62,7 @@ const Login = () => {
       <div style={{ width: "300px", textAlign: "center" }}>
         <img
           src={LogoSafeMap1}
-          alt=""
+          alt="Your Image"
           style={{ width: "130%", marginBottom: "20px", marginLeft: "-45px" }}
         />
         <h1>Sign In</h1>
@@ -98,8 +97,7 @@ const Login = () => {
             Sign In
           </button>
         </form>
-        {/* Link to the Forgot Password page */}
-        <p>Forgot password?</p>
+        <p style={{ color: "#2a5ba6" }}>Forgot password?</p>
         <div
           style={{
             display: "flex",
