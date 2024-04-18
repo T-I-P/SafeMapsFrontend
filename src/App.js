@@ -6,6 +6,9 @@ import Location from "./components/location";
 import NavigationBar from "./components/navbar";
 import { Nav } from "react-bootstrap";
 import Loader from "react-js-loader";
+import React from "react";
+import MapComponent from "./components/MapComponent";
+import LocationInput from "./components/LocationInput";
 
 const App = () => {
   const [office, setOffice] = useState(null);
@@ -195,7 +198,7 @@ const App = () => {
     setLoaded(true);
 
     setMapContainerStyle({
-      width: "60vw",
+      width: "70vw",
       height: "90vh",
     });
     setCenter({
@@ -277,78 +280,80 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <NavigationBar />
       <div className="app-container">
-        <div className="location-container">
-          <h1 className="logo-heading">SafeMap</h1>
-          <div className="location-input-container">
-            <Location
-              key="origin"
-              setOffice={(position) => {
-                setOffice(position);
-                mapRef.current.panTo(position);
-              }}
-              placeholder={"Enter Source Location"}
-            />
-            <Location
-              key="destination"
-              setOffice={(position) => {
-                setDestination(position);
-              }}
-              placeholder={"Enter Destination Location"}
-            />
-          </div>
+        <div className="location-container" style={{ textAlign: "center" }}>
+          <h1 style={{ margin: 0, color: "white", paddingBottom: "2vw" }}>
+            SafeMap
+          </h1>
 
-          <button onClick={fetchDirections}>Get Directions</button>
-          <button onClick={checkSafety} disabled={!crimesDetected}>
-            Get Safest Route
-          </button>
-          {loader && (
-            <div>
-              <center>
-                <progress value={progress} max={pathCoordinates[0].length} />
-                <span className="progress-text">
-                  {((progress / pathCoordinates[0].length) * 100).toFixed(0)}%
-                </span>
-              </center>
-            </div>
-          )}
+          <LocationInput
+            setOffice={setOffice}
+            setDestination={setDestination}
+            fetchDirections={fetchDirections}
+            checkSafety={checkSafety}
+            crimesDetected={crimesDetected}
+            loader={loader}
+            progress={progress}
+            pathCoordinates={pathCoordinates}
+          />
           {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
         </div>
 
-        <div>
+        <div style={{ flexGrow: 1, width: "100%" }}>
           {loaded && (
             <div className="map">
               <center>
-                <GoogleMap
+                <MapComponent
                   mapContainerStyle={mapContainerStyle}
-                  zoom={10}
                   center={center}
+                  office={office}
+                  crimes={crimes}
                   onLoad={onLoad}
-                >
-                  {office && (
-                    <div>
-                      <Marker position={office} />{" "}
-                      {crimes.map((crime, idx) => (
-                        <Marker
-                          key={idx}
-                          position={crime}
-                          icon={{
-                            url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
-                            scaledSize: new window.google.maps.Size(15, 15),
-                          }}
-                        />
-                      ))}{" "}
-                    </div>
-                  )}
-                </GoogleMap>
+                />
               </center>
             </div>
           )}
         </div>
       </div>
     </div>
+    // <div>
+    //   <NavigationBar />
+    //   <div className="app-container">
+    //     <div className="location-container" style={{ textAlign: 'center'}}>
+    //       <h1 style={{ margin: 0 , color: 'white', paddingBottom: '2vw'}}>SafeMap</h1>
+
+    //       <LocationInput
+    //           setOffice={setOffice}
+    //           setDestination={setDestination}
+    //           fetchDirections={fetchDirections}
+    //           checkSafety={checkSafety}
+    //           crimesDetected={crimesDetected}
+    //           loader={loader}
+    //           progress={progress}
+    //           pathCoordinates={pathCoordinates}
+    //       />
+    //       {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
+    //     </div>
+
+    //       <div>
+    //         {loaded && (
+    //           <div className="map">
+    //           <center>
+    //             <MapComponent
+    //               mapContainerStyle={mapContainerStyle}
+    //               center={center}
+    //               office={office}
+    //               crimes={crimes}
+    //               onLoad={onLoad}
+    //             />
+    //           </center>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
