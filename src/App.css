@@ -83,3 +83,7 @@
 body {
   margin: 0; /* Remove default margin */
 }
+.progress-text {
+  color: whitesmoke;
+  margin-left: 5%;
+}
