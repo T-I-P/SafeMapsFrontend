@@ -18,7 +18,7 @@ function NavigationBar() {
           <Nav.Link className="navlink-3" href="#features">
             Route Safety
           </Nav.Link>
-          <Nav.Link className="navlink-4" href="#pricing">
+          <Nav.Link className="navlink-4" href="/accountInfo">
             Account
           </Nav.Link>
         </Nav>

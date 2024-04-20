@@ -15,9 +15,9 @@ const Login = () => {
     navigate("/app");
   };
 
-  const handleSignUpClick = () => {
+  const handleGuestLogin = () => {
     //will move to the signup.js when sign up button is called
-    navigate("/signup");
+    navigate("/guestLogin");
   };
 
   return (
@@ -42,9 +42,9 @@ const Login = () => {
             style={{ height: "45px" }}
           />
         </div>
-        <button
+        {/* <button
           style={{
-            background: "#2a5ba6",
+            background: "#19396C",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -53,9 +53,9 @@ const Login = () => {
             fontSize: "16px",
           }}
           onClick={handleSignUpClick}
-        >
-          Sign Up
-        </button>{" "}
+        > */}
+        {/* Sign Up
+        </button>{" "} */}
         {/* Increased button size */}
       </div>
       {/*Alignment of the imagw*/}
@@ -86,7 +86,7 @@ const Login = () => {
           <button
             type="submit"
             style={{
-              background: "#2a5ba6",
+              background: "#19396C",
               color: "white",
               border: "none",
               borderRadius: "5px",
@@ -97,7 +97,17 @@ const Login = () => {
             Sign In
           </button>
         </form>
-        <p style={{ color: "#2a5ba6" }}>Forgot password?</p>
+        <a
+          href="/forgotPassword"
+          style={{
+            color: "#19396C",
+            textDecoration: "none",
+            padding: "10px",
+            marginTop: "20px",
+          }}
+        >
+          Forgot password?
+        </a>
         <div
           style={{
             display: "flex",
@@ -105,27 +115,36 @@ const Login = () => {
             alignItems: "center",
             width: "100%",
           }}
+        ></div>
+        <a
+          href="/app"
+          style={{ color: "#19396C", textDecoration: "none", padding: "10px" }}
         >
-          <hr style={{ width: "45%", margin: "0" }} />
-          <span style={{ color: "#2a5ba6" }}>OR</span>
-          <hr style={{ width: "45%", margin: "0" }} />
-        </div>
-        <p>Sign in with</p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "40px",
+          Guest Login
+        </a>
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <hr style={{ width: "45%", margin: "0", marginTop: "15px" }} />
+        <span style={{ color: "#19396C", padding: "10px" }}>OR</span>
+        <hr style={{ width: "45%", margin: "0", marginBottom: "5px" }} />
+      </div>
+      <p>Sign in with</p>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "40px",
+        }}
+      >
+        <GoogleLogin
+          onSuccess={responseGoogle}
+          onFailure={() => {
+            console.log("Login Failed");
           }}
-        >
-          <GoogleLogin
-            onSuccess={responseGoogle}
-            onFailure={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </div>
+        />
       </div>
     </div>
   );
 };
+
+export default Login;
