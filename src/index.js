@@ -7,6 +7,10 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Login from "./login";
+import ForgotPassword from "./forgotPassword";
+import GuestLogin from "./guestLogin";
+import AccountInfo from "./accountInfo";
+import Logout from "./logout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,6 +19,10 @@ root.render(
       <Routes>
         <Route element={<Login />} exact path="/" />
         <Route element={<App />} path="/app" />
+        <Route element={<ForgotPassword />} path="/forgotPassword" />
+        <Route element={<GuestLogin />} path="/guestLogin" />
+        <Route element={<AccountInfo />} path="/accountInfo" />
+        <Route element={<Logout />} path="/logout" />
       </Routes>
     </Router>
   </GoogleOAuthProvider>,
