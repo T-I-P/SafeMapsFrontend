@@ -3,6 +3,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import LogoSafeMap1 from "./LogoSafeMap1.png";
 import LogoSafeMapWritten from "./LogoWritten.png";
+import "bootstrap";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -97,38 +98,66 @@ const Login = () => {
             Sign In
           </button>
         </form>
+      </div>
+
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style={{ width: "100%" }}
+      >
         <a
           href="/forgotPassword"
           style={{
             color: "#19396C",
             textDecoration: "none",
             padding: "10px",
-            marginTop: "20px",
+            marginTop: "15px",
+            marginBottom: "15px",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            width: "40%", // Adjusted width
+            textAlign: "right", // Right-align text
+            marginRight: "20px", // Right margin for spacing
           }}
         >
           Forgot password?
         </a>
-        <div
+        {/* </div>
+          <div class="col"> */}
+
+        <a
+          href="/app"
+          style={{
+            color: "#19396C",
+            textDecoration: "none",
+            padding: "10px",
+            marginTop: "15px",
+            marginBottom: "15px",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            width: "40%", // Adjusted width
+            textAlign: "left", // Left-align text
+            marginLeft: "20px", // Left margin for spacing
+          }}
+        >
+          Guest Login
+        </a>
+        {/* </div> */}
+
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
           }}
-        ></div>
-        <a
-          href="/app"
-          style={{ color: "#19396C", textDecoration: "none", padding: "10px" }}
-        >
-          Guest Login
-        </a>
+        ></div> */}
       </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      {/* <div style={{ display: "flex", alignItems: "center" }}>
         <hr style={{ width: "45%", margin: "0", marginTop: "15px" }} />
         <span style={{ color: "#19396C", padding: "10px" }}>OR</span>
         <hr style={{ width: "45%", margin: "0", marginBottom: "5px" }} />
       </div>
-      <p>Sign in with</p>
+      <p>Sign in with</p> */}
       <div
         style={{
           display: "flex",
