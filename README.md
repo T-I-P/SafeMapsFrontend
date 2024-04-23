@@ -26,4 +26,4 @@ Branching Strategy:
 When creating a new branch, adhere to the following convention: use `feature/<User Story Number>` for feature branches or `bugfix/<User Story Number>` if it is a bugfix branch.
 
 
->_Remember to always take a pull from the `main` branch before you start working on any feature or bug_
+> _Remember to always take a pull from the `main` branch before you start working on any feature or bug_
