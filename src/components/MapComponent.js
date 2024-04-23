@@ -1,5 +1,10 @@
 import React from "react";
-import { GoogleMap, Marker, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  useLoadScript,
+} from "@react-google-maps/api";
 import Loader from "react-js-loader";
 
 const MapComponent = ({
@@ -25,38 +30,35 @@ const MapComponent = ({
       center={center}
       onLoad={onLoad}
     >
-      {office && (
-        <Marker position={office} />
+      {office && <Marker position={office} />}
+      {crimes.map((crime, idx) => (
+        <Marker
+          key={idx}
+          position={{ lat: crime.lat, lng: crime.lng }}
+          onClick={() => setSelectedCrime(crime)}
+          icon={{
+            url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
+            scaledSize: new window.google.maps.Size(15, 15),
+          }}
+        />
+      ))}
+      {selectedCrime && (
+        <InfoWindow
+          position={{ lat: selectedCrime.lat, lng: selectedCrime.lng }}
+          onCloseClick={() => setSelectedCrime(null)}
+        >
+          <div>
+            <h2>{selectedCrime.InfoWindow}</h2>
+            <h2>{selectedCrime.type}</h2>
+            <p>{selectedCrime.description}</p>
+            <p>
+              <strong>Date:</strong> {selectedCrime.date}
+            </p>
+          </div>
+        </InfoWindow>
       )}
-      {
-        crimes.map((crime, idx) => (
-          <Marker
-            key={idx}
-            position={{ lat: crime.lat, lng: crime.lng }}
-            onClick={() => setSelectedCrime(crime)}
-            icon = {{
-              url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
-              scaledSize: new window.google.maps.Size(15, 15),
-            }}
-          />
-        ))}
-        { selectedCrime && (
-          <InfoWindow
-            position={{ lat: selectedCrime.lat, lng: selectedCrime.lng }}
-            onCloseClick={() => setSelectedCrime(null)}
-          >
-              <div>
-              <h2>{selectedCrime.InfoWindow}</h2>
-              <h2>{selectedCrime.type}</h2>
-              <p>{selectedCrime.description}</p>
-              <p><strong>Date:</strong> {selectedCrime.date}</p>
-            </div>
-          </InfoWindow>
-        )}
 
-
-
-        {/* <div>
+      {/* <div>
           <Marker position={office} />
           {" "}
           {crimes.map((crime, idx) => (
