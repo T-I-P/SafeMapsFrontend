@@ -12,7 +12,7 @@ const MapComponent = ({
 }) => {
    
   
-  console.log(crimes);
+  console.log("Crimes:", crimes);
   console.log(crimesDetected);
   const temp = {lat: 40, lng: -74};
   const heatMapData = [

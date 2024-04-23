@@ -3,6 +3,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import LogoSafeMap1 from "./LogoSafeMap1.png";
 import LogoSafeMapWritten from "./LogoWritten.png";
+import "bootstrap";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ const Login = () => {
     navigate("/app");
   };
 
-  const handleSignUpClick = () => {
+  const handleGuestLogin = () => {
     //will move to the signup.js when sign up button is called
-    navigate("/signup");
+    navigate("/guestLogin");
   };
 
   return (
@@ -42,9 +43,9 @@ const Login = () => {
             style={{ height: "45px" }}
           />
         </div>
-        <button
+        {/* <button
           style={{
-            background: "#2a5ba6",
+            background: "#19396C",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -53,9 +54,9 @@ const Login = () => {
             fontSize: "16px",
           }}
           onClick={handleSignUpClick}
-        >
-          Sign Up
-        </button>{" "}
+        > */}
+        {/* Sign Up
+        </button>{" "} */}
         {/* Increased button size */}
       </div>
       {/*Alignment of the imagw*/}
@@ -86,7 +87,7 @@ const Login = () => {
           <button
             type="submit"
             style={{
-              background: "#2a5ba6",
+              background: "#19396C",
               color: "white",
               border: "none",
               borderRadius: "5px",
@@ -97,34 +98,79 @@ const Login = () => {
             Sign In
           </button>
         </form>
-        <p style={{ color: "#2a5ba6" }}>Forgot password?</p>
-        <div
+      </div>
+
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style={{ width: "100%" }}
+      >
+        <a
+          href="/forgotPassword"
+          style={{
+            color: "#19396C",
+            textDecoration: "none",
+            padding: "10px",
+            marginTop: "15px",
+            marginBottom: "15px",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            width: "40%", // Adjusted width
+            textAlign: "right", // Right-align text
+            marginRight: "20px", // Right margin for spacing
+          }}
+        >
+          Forgot password?
+        </a>
+        {/* </div>
+          <div class="col"> */}
+
+        <a
+          href="/app"
+          style={{
+            color: "#19396C",
+            textDecoration: "none",
+            padding: "10px",
+            marginTop: "15px",
+            marginBottom: "15px",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            width: "40%", // Adjusted width
+            textAlign: "left", // Left-align text
+            marginLeft: "20px", // Left margin for spacing
+          }}
+        >
+          Guest Login
+        </a>
+        {/* </div> */}
+
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
           }}
-        >
-          <hr style={{ width: "45%", margin: "0" }} />
-          <span style={{ color: "#2a5ba6" }}>OR</span>
-          <hr style={{ width: "45%", margin: "0" }} />
-        </div>
-        <p>Sign in with</p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "40px",
+        ></div> */}
+      </div>
+      {/* <div style={{ display: "flex", alignItems: "center" }}>
+        <hr style={{ width: "45%", margin: "0", marginTop: "15px" }} />
+        <span style={{ color: "#19396C", padding: "10px" }}>OR</span>
+        <hr style={{ width: "45%", margin: "0", marginBottom: "5px" }} />
+      </div>
+      <p>Sign in with</p> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "40px",
+        }}
+      >
+        <GoogleLogin
+          onSuccess={responseGoogle}
+          onFailure={() => {
+            console.log("Login Failed");
           }}
-        >
-          <GoogleLogin
-            onSuccess={responseGoogle}
-            onFailure={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </div>
+        />
       </div>
     </div>
   );
