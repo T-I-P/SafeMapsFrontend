@@ -1,5 +1,5 @@
 // prettier-ignore
-import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle} from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle, HeatmapLayer} from '@react-google-maps/api';
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
 import Location from "./components/location";
@@ -30,7 +30,7 @@ const App = () => {
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
   const [progress, setProgress] = useState(0);
-  const libraries = ["places"];
+  const libraries = ["places", "visualization"];
 
   function handleLocationClick() {
     if (navigator.geolocation) {
@@ -44,7 +44,9 @@ const App = () => {
     handleLocationClick();
   }, []);
   useEffect(() => {
+    console.log("pathCoordinates", pathCoordinates);
     mapCrimeData();
+
   }, [pathCoordinates]);
 
   const checkSafety = () => {
@@ -311,6 +313,7 @@ const App = () => {
                   office={office}
                   crimes={crimes}
                   onLoad={onLoad}
+                  crimesDetected={crimesDetected}
                 />
               </center>
             </div>

@@ -1,24 +1,16 @@
 import React from "react";
-import { GoogleMap, HeatmapLayer, Marker, useLoadScript } from "@react-google-maps/api";
-import Loader from "react-js-loader";
+import { GoogleMap,Marker, useLoadScript } from "@react-google-maps/api";
 
-const MapComponent = ({
+
+const HomeMap = ({
   mapContainerStyle,
   center,
-  office,
-  crimes,
   onLoad,
-  crimesDetected,
+  office,
+  houseList,
+  crimes
 }) => {
-   
-  
-  console.log(crimes);
-  console.log(crimesDetected);
-  const temp = {lat: 40, lng: -74};
-  const heatMapData = [
-    {lat: 40, lng: -74},{lat: 40, lng: -74},
-    {lat: 40, lng: -74},{lat: 40, lng: -74},{lat: 40, lng: -74},{lat: 40, lng: -74}
-  ]
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -31,18 +23,21 @@ const MapComponent = ({
       mapContainerStyle={mapContainerStyle}
       zoom={10}
       center={center}
-      onLoad={(map)=> onLoad(map)}
+      onLoad={onLoad}
     >
       {office && (
         <div>
-          
-            <>
-              <HeatmapLayer data={heatMapData.map(crime =>  window.google.maps.LatLng(crime.lat, crime.lng))} options={{radius:50}}/>
-              <Marker position={temp} />{" "}
-            </>
-          
-          
-          <Marker position={office} />{" "}
+          <Marker position={office} />{" "}   
+          {houseList.map((house, idx) => (
+            <Marker
+              key={idx}
+              position={house}
+              icon={{
+                url: "https://www.iconarchive.com/download/i103430/paomedia/small-n-flat/house.1024.png",
+                scaledSize: new window.google.maps.Size(30, 30),
+              }}
+            />
+          ))}{" "}    
           {crimes.map((crime, idx) => (
             <Marker
               key={idx}
@@ -52,8 +47,9 @@ const MapComponent = ({
                 scaledSize: new window.google.maps.Size(15, 15),
               }}
             />
-          ))}{" "}
-          
+          ))}{" "}    
+
+ 
         </div>
       )}
       
@@ -61,4 +57,4 @@ const MapComponent = ({
   );
 };
 
-export default MapComponent;
+export default HomeMap;

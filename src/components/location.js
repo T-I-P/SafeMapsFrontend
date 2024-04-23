@@ -5,7 +5,7 @@ import usePlacesAutoComplete, {
 import Suggestion from "./suggestion";
 import React from "react";
 
-const Location = ({ setOffice, placeholder }) => {
+const Location = ({ setOffice, placeholder, setZipCode }) => {
   const {
     ready,
     value,
@@ -36,8 +36,19 @@ const Location = ({ setOffice, placeholder }) => {
     clearSuggestions();
 
     try {
+      
       const results = await getGeocode({ address: suggestion.description });
+      
       const { lat, lng } = await getLatLng(results[0]);
+      if(setZipCode) {
+        const addressComponents = results[0].address_components;
+        const zipCodeObj = addressComponents.find(component => component.types.includes('postal_code'));
+        if (zipCodeObj) {
+          setZipCode(zipCodeObj.long_name);
+        }
+     
+
+      }
       setOffice({ lat, lng });
     } catch (error) {
       console.error("Error selecting suggestion:", error);
