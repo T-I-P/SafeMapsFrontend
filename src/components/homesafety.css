@@ -1,0 +1,24 @@
+.safemap-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.location-container {
+  padding-top: 10%;
+  display: flex;
+  flex-direction: column;
+  background-color: #282c34;
+  width: 25vw;
+  height: 100%;
+}
+
+.sideBar-button {
+  width: 50%;
+}

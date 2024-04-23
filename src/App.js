@@ -1,5 +1,5 @@
 // prettier-ignore
-import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle} from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, MAP_PANE , Circle, HeatmapLayer} from '@react-google-maps/api';
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
 import Location from "./components/location";
@@ -30,7 +30,7 @@ const App = () => {
   const [crimes, setCrimes] = useState([]);
   const [pathCoordinates, setPathCoordinates] = useState([]);
   const [progress, setProgress] = useState(0);
-  const libraries = ["places"];
+  const libraries = ["places", "visualization"];
 
   function handleLocationClick() {
     if (navigator.geolocation) {
@@ -44,6 +44,7 @@ const App = () => {
     handleLocationClick();
   }, []);
   useEffect(() => {
+    console.log("pathCoordinates", pathCoordinates);
     mapCrimeData();
   }, [pathCoordinates]);
 
@@ -143,48 +144,80 @@ const App = () => {
     if (pathCoordinates.length === 0) {
       return;
     }
-    setCircle({
-      lat: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lat, // default latitude
-      lng: pathCoordinates[0][parseInt(pathCoordinates[0].length / 2)].lng, // default longitude
-    });
-    //console.log(pathCoordinates)
-    setLoader(true);
-    for (let i = 0; i < pathCoordinates.length; i++) {
-      for (let j = 0; j < pathCoordinates[i].length; j += 10) {
-        console.log("========================", j, pathCoordinates[i][j]);
-        const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            latitude: pathCoordinates[i][j].lat,
-            longitude: pathCoordinates[i][j].lng,
-            radius: 0.02,
-          }),
-        });
-        const crimeData = await response.json();
-        let newCrimes = [...crimes];
 
-        console.log(j, crimeData);
-        if (crimeData.data !== undefined) {
-          for (let k = 0; k < crimeData.data.length; k++) {
-            const temp = {
-              lat: parseFloat(crimeData.data[k].lat),
-              lng: parseFloat(crimeData.data[k].lon),
-            };
-            newCrimes.push(temp);
-          }
+    setLoader(true);
+    // for (let i = 0; i < pathCoordinates.length; i++) {
+    //   for (let j = 0; j < pathCoordinates[i].length; j += 10) {
+    //     console.log("========================", j, pathCoordinates[i][j]);
+    //     const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         latitude: pathCoordinates[i][j].lat,
+    //         longitude: pathCoordinates[i][j].lng,
+    //         radius: 0.02,
+    //       }),
+    //     });
+    //     const crimeData = await response.json();
+    //     let newCrimes = [...crimes];
+
+    //     console.log(j, crimeData);
+    //     if (crimeData.data !== undefined) {
+    //       for (let k = 0; k < crimeData.data.length; k++) {
+    //         const temp = {
+    //           lat: parseFloat(crimeData.data[k].lat),
+    //           lng: parseFloat(crimeData.data[k].lon),
+    //         };
+    //         newCrimes.push(temp);
+    //       }
+    //     }
+    //     setCrimes((prevCrimes) => [...prevCrimes, ...newCrimes]);
+    //     if (j > 17) {
+    //       await new Promise((resolve) => setTimeout(resolve, 6000));
+    //     } else {
+    //       await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     }
+    //     setProgress((prevProgress) => prevProgress + 10);
+    //   }
+    // }
+    const api_url = process.env.REACT_APP_FETCH_CRIME_DATA;
+    let convertedPathCoordinates = pathCoordinates.map((path) =>
+      path.map((point) => [point.lat, point.lng]),
+    );
+    const response = await fetch(api_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        route_list: convertedPathCoordinates,
+      }),
+    });
+
+    const allCrimes = await response.json();
+    const crimeData = allCrimes.data;
+    const flattenedCrimeData = crimeData.flat().map((crime) => ({
+      lat: parseFloat(crime.latitude),
+      lng: parseFloat(crime.longitude),
+    }));
+
+    for (let i = 0; i < crimeData.length; i++) {
+      for (let j = 0; j < crimeData[i].length; j++) {
+        for (let k = 0; k < crimeData[i][j].crimeData.length; k++) {
+          const crime = crimeData[i][j].crimeData[k];
+          const temp = {
+            lat: parseFloat(crime.lat),
+            lng: parseFloat(crime.lon),
+          };
+          setCrimes((prevCrimes) => [...prevCrimes, temp]);
         }
-        setCrimes((prevCrimes) => [...prevCrimes, ...newCrimes]);
-        if (j > 17) {
-          await new Promise((resolve) => setTimeout(resolve, 6000));
-        } else {
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-        }
-        setProgress((prevProgress) => prevProgress + 10);
       }
     }
+
+    console.log(flattenedCrimeData);
+
     setCrimesDetected(true);
     setLoader(false);
   };
@@ -311,6 +344,7 @@ const App = () => {
                   office={office}
                   crimes={crimes}
                   onLoad={onLoad}
+                  crimesDetected={crimesDetected}
                 />
               </center>
             </div>
