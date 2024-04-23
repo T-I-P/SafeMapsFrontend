@@ -172,6 +172,10 @@ const App = () => {
             const temp = {
               lat: parseFloat(crimeData.data[k].lat),
               lng: parseFloat(crimeData.data[k].lon),
+              description: crimeData.data[k].description,
+              type: crimeData.data[k].type,
+              date: crimeData.data[k].date,
+              InfoWindow: crimeData.data[k].InfoWindow,
             };
             newCrimes.push(temp);
           }
