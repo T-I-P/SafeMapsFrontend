@@ -1,6 +1,5 @@
 import React from "react";
-import { GoogleMap,Marker, useLoadScript } from "@react-google-maps/api";
-
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 const HomeMap = ({
   mapContainerStyle,
@@ -8,9 +7,8 @@ const HomeMap = ({
   onLoad,
   office,
   houseList,
-  crimes
+  crimes,
 }) => {
-
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -27,7 +25,7 @@ const HomeMap = ({
     >
       {office && (
         <div>
-          <Marker position={office} />{" "}   
+          <Marker position={office} />{" "}
           {houseList.map((house, idx) => (
             <Marker
               key={idx}
@@ -37,7 +35,7 @@ const HomeMap = ({
                 scaledSize: new window.google.maps.Size(30, 30),
               }}
             />
-          ))}{" "}    
+          ))}{" "}
           {crimes.map((crime, idx) => (
             <Marker
               key={idx}
@@ -47,12 +45,9 @@ const HomeMap = ({
                 scaledSize: new window.google.maps.Size(15, 15),
               }}
             />
-          ))}{" "}    
-
- 
+          ))}{" "}
         </div>
       )}
-      
     </GoogleMap>
   );
 };

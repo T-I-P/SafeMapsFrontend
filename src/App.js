@@ -46,7 +46,6 @@ const App = () => {
   useEffect(() => {
     console.log("pathCoordinates", pathCoordinates);
     mapCrimeData();
-
   }, [pathCoordinates]);
 
   const checkSafety = () => {
@@ -184,7 +183,9 @@ const App = () => {
     //   }
     // }
     const api_url = process.env.REACT_APP_FETCH_CRIME_DATA;
-    let convertedPathCoordinates = pathCoordinates.map(path => path.map(point => [point.lat, point.lng]));
+    let convertedPathCoordinates = pathCoordinates.map((path) =>
+      path.map((point) => [point.lat, point.lng]),
+    );
     const response = await fetch(api_url, {
       method: "POST",
       headers: {
@@ -197,14 +198,14 @@ const App = () => {
 
     const allCrimes = await response.json();
     const crimeData = allCrimes.data;
-    const flattenedCrimeData = crimeData.flat().map(crime => ({
+    const flattenedCrimeData = crimeData.flat().map((crime) => ({
       lat: parseFloat(crime.latitude),
-      lng: parseFloat(crime.longitude)
+      lng: parseFloat(crime.longitude),
     }));
 
-    for(let i = 0; i < crimeData.length; i++) {
-      for(let j = 0; j < crimeData[i].length; j++) {
-        for(let k = 0; k < crimeData[i][j].crimeData.length; k++) {
+    for (let i = 0; i < crimeData.length; i++) {
+      for (let j = 0; j < crimeData[i].length; j++) {
+        for (let k = 0; k < crimeData[i][j].crimeData.length; k++) {
           const crime = crimeData[i][j].crimeData[k];
           const temp = {
             lat: parseFloat(crime.lat),
@@ -214,10 +215,9 @@ const App = () => {
         }
       }
     }
-      
 
     console.log(flattenedCrimeData);
-    
+
     setCrimesDetected(true);
     setLoader(false);
   };

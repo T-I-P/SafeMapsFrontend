@@ -7,12 +7,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 function NavigationBar() {
-
   const navigate = useNavigate();
 
-
   const handleHomeSafety = (e) => {
-
     e.preventDefault();
     navigate("/homeSafety");
   };
@@ -23,7 +20,7 @@ function NavigationBar() {
           Home
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link className="navlink-2"  onClick={handleHomeSafety}>
+          <Nav.Link className="navlink-2" onClick={handleHomeSafety}>
             Home Safety
           </Nav.Link>
           <Nav.Link className="navlink-3" href="#features">

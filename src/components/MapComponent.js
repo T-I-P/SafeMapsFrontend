@@ -1,5 +1,10 @@
 import React from "react";
-import { GoogleMap, HeatmapLayer, Marker, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  HeatmapLayer,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
 import Loader from "react-js-loader";
 
 const MapComponent = ({
@@ -10,15 +15,17 @@ const MapComponent = ({
   onLoad,
   crimesDetected,
 }) => {
-   
-  
   console.log("Crimes:", crimes);
   console.log(crimesDetected);
-  const temp = {lat: 40, lng: -74};
+  const temp = { lat: 40, lng: -74 };
   const heatMapData = [
-    {lat: 40, lng: -74},{lat: 40, lng: -74},
-    {lat: 40, lng: -74},{lat: 40, lng: -74},{lat: 40, lng: -74},{lat: 40, lng: -74}
-  ]
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+  ];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -31,17 +38,19 @@ const MapComponent = ({
       mapContainerStyle={mapContainerStyle}
       zoom={10}
       center={center}
-      onLoad={(map)=> onLoad(map)}
+      onLoad={(map) => onLoad(map)}
     >
       {office && (
         <div>
-          
-            <>
-              <HeatmapLayer data={heatMapData.map(crime =>  window.google.maps.LatLng(crime.lat, crime.lng))} options={{radius:50}}/>
-              <Marker position={temp} />{" "}
-            </>
-          
-          
+          <>
+            <HeatmapLayer
+              data={heatMapData.map((crime) =>
+                window.google.maps.LatLng(crime.lat, crime.lng),
+              )}
+              options={{ radius: 50 }}
+            />
+            <Marker position={temp} />{" "}
+          </>
           <Marker position={office} />{" "}
           {crimes.map((crime, idx) => (
             <Marker
@@ -53,10 +62,8 @@ const MapComponent = ({
               }}
             />
           ))}{" "}
-          
         </div>
       )}
-      
     </GoogleMap>
   );
 };

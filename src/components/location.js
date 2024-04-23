@@ -36,18 +36,17 @@ const Location = ({ setOffice, placeholder, setZipCode }) => {
     clearSuggestions();
 
     try {
-      
       const results = await getGeocode({ address: suggestion.description });
-      
+
       const { lat, lng } = await getLatLng(results[0]);
-      if(setZipCode) {
+      if (setZipCode) {
         const addressComponents = results[0].address_components;
-        const zipCodeObj = addressComponents.find(component => component.types.includes('postal_code'));
+        const zipCodeObj = addressComponents.find((component) =>
+          component.types.includes("postal_code"),
+        );
         if (zipCodeObj) {
           setZipCode(zipCodeObj.long_name);
         }
-     
-
       }
       setOffice({ lat, lng });
     } catch (error) {
