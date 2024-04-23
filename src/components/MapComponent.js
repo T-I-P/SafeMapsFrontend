@@ -13,7 +13,19 @@ const MapComponent = ({
   office,
   crimes,
   onLoad,
+  crimesDetected,
 }) => {
+  console.log("Crimes:", crimes);
+  console.log(crimesDetected);
+  const temp = { lat: 40, lng: -74 };
+  const heatMapData = [
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+    { lat: 40, lng: -74 },
+  ];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -28,7 +40,7 @@ const MapComponent = ({
       mapContainerStyle={mapContainerStyle}
       zoom={10}
       center={center}
-      onLoad={onLoad}
+      onLoad={(map) => onLoad(map)}
     >
       {office && <Marker position={office} />}
       {crimes.map((crime, idx) => (

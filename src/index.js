@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomeSafety from "./components/homeSafety";
 
 import Login from "./login";
 import ForgotPassword from "./forgotPassword";
@@ -19,6 +20,7 @@ root.render(
       <Routes>
         <Route element={<Login />} exact path="/" />
         <Route element={<App />} path="/app" />
+        <Route element={<HomeSafety />} path="/homeSafety" />
         <Route element={<ForgotPassword />} path="/forgotPassword" />
         <Route element={<GuestLogin />} path="/guestLogin" />
         <Route element={<AccountInfo />} path="/accountInfo" />
