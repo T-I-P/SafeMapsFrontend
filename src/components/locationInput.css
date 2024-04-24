@@ -8,14 +8,12 @@
   background-color: white;
   margin-left: 2%;
 }
-.my-2:hover {
-  background-color: lightgreen;
-  margin-left: 2%;
-}
+
 .my-2 {
   background-color: lightcyan;
   margin-left: 2%;
 }
+
 .direction {
   width: 30px;
   padding-right: 5%;
