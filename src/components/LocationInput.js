@@ -50,8 +50,6 @@ const LocationInput = ({
       >
         Get Safest Route
       </Button>
-
-
     </div>
   );
 };

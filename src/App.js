@@ -215,7 +215,6 @@ const App = () => {
       }
     }
 
-
     setCrimesDetected(true);
     setLoader(false);
   };
@@ -329,7 +328,9 @@ const App = () => {
             progress={progress}
             pathCoordinates={pathCoordinates}
           />
-          {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />}
+          {loader && (
+            <Loader type="spinner-cub" title={"Mapping Crime data"} size={50} />
+          )}
         </div>
 
         <div style={{ flexGrow: 1, width: "100%" }}>
