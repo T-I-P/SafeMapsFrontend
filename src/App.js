@@ -141,14 +141,14 @@ const App = () => {
 
   function getIconUrl(crimeType) {
     switch (crimeType) {
-      case 'Theft':
-        return 'https://banner2.cleanpng.com/20180328/djq/kisspng-computer-icons-theft-clip-art-thief-5abc3187dd2736.2586388115222828879059.jpg';
-      case 'Assault':
-        return 'https://cdn.imgbin.com/1/10/11/imgbin-assault-crime-harassment-computer-icons-others-w093SDEJVH7XMvdCZU34ZN37h.jpg';
-      case 'Burglary':
-        return 'https://banner2.cleanpng.com/20190628/xhc/kisspng-clip-art-portable-network-graphics-arrest-police-o-download-chain-clipart-handcuff-handcuffs-clipar-5d15d6ddf2fbd8.0076761215617123499953.jpg';
+      case "Theft":
+        return "https://banner2.cleanpng.com/20180328/djq/kisspng-computer-icons-theft-clip-art-thief-5abc3187dd2736.2586388115222828879059.jpg";
+      case "Assault":
+        return "https://cdn.imgbin.com/1/10/11/imgbin-assault-crime-harassment-computer-icons-others-w093SDEJVH7XMvdCZU34ZN37h.jpg";
+      case "Burglary":
+        return "https://banner2.cleanpng.com/20190628/xhc/kisspng-clip-art-portable-network-graphics-arrest-police-o-download-chain-clipart-handcuff-handcuffs-clipar-5d15d6ddf2fbd8.0076761215617123499953.jpg";
       default:
-        return 'https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain';
+        return "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain";
     }
   }
 
@@ -222,7 +222,7 @@ const App = () => {
           const temp = {
             lat: parseFloat(crime.lat),
             lng: parseFloat(crime.lon),
-            date: crime.date, 
+            date: crime.date,
             type: crime.type,
             iconUrl: getIconUrl(crime.type),
           };
@@ -331,7 +331,7 @@ const App = () => {
       <div className="app-container">
         <div className="location-container" style={{ textAlign: "center" }}>
           <center>
-            <img src='/sm_192_logo.png' className='logo-safemap'/>
+            <img src="/sm_192_logo.png" className="logo-safemap" />
             <h1 style={{ margin: 0, color: "white", paddingBottom: "2vw" }}>
               SafeMap
             </h1>

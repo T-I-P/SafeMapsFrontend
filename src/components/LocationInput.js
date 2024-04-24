@@ -15,7 +15,8 @@ const LocationInput = ({
   progress,
   pathCoordinates,
 }) => {
-  const buttonStyle = { // Set background color to white
+  const buttonStyle = {
+    // Set background color to white
     color: "black", // Set text color to black
     borderColor: "#ccc", // Optional: add a light gray border
     boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Optional: add a subtle shadow for better UI
@@ -40,8 +41,10 @@ const LocationInput = ({
       />
 
       <Button onClick={fetchDirections} className="my-1" style={buttonStyle}>
-        
-        <img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-arrow-right-vector-icon-png-image_1027236.jpg " className="direction"/>
+        <img
+          src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-arrow-right-vector-icon-png-image_1027236.jpg "
+          className="direction"
+        />
         Get Directions
       </Button>
       <Button
@@ -50,7 +53,10 @@ const LocationInput = ({
         className="my-2"
         style={buttonStyle}
       >
-        <img src = "https://spng.pngfind.com/pngs/s/114-1147878_location-poi-pin-marker-position-red-map-google.png " className="safest"/>
+        <img
+          src="https://spng.pngfind.com/pngs/s/114-1147878_location-poi-pin-marker-position-red-map-google.png "
+          className="safest"
+        />
         Get Safest Route
       </Button>
     </div>

@@ -251,8 +251,12 @@ const HomeSafety = () => {
                 Get Safest House{" "}
               </button>
               {loader && (
-            <Loader type="spinner-cub" title={"Mapping Crime data"} size={50} />
-          )}
+                <Loader
+                  type="spinner-cub"
+                  title={"Mapping Crime data"}
+                  size={50}
+                />
+              )}
             </center>
           </div>
         </div>

@@ -30,7 +30,6 @@ const MapComponent = ({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-
   const [selectedCrime, setSelectedCrime] = React.useState(null);
 
   if (loadError) return <div>Error loading maps</div>;
@@ -50,11 +49,10 @@ const MapComponent = ({
           position={{ lat: crime.lat, lng: crime.lng }}
           onMouseOver={() => setSelectedCrime(crime)}
           onMouseOut={() => setSelectedCrime(null)}
-
           icon={{
             url: crime.iconUrl,
-            scaledSize: new window.google.maps.Size(15, 15)}
-          }
+            scaledSize: new window.google.maps.Size(15, 15),
+          }}
         />
       ))}
       {selectedCrime && (
