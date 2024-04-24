@@ -48,8 +48,7 @@ const App = () => {
     mapCrimeData();
   }, [pathCoordinates]);
 
-  const checkSafety = () => {
-    console.log(routes, crimes);
+  const checkSafety = async () => {
     const R = 6371; // Radius of the earth in km
     const maxDistance = 5; // Max distance in km
 
@@ -82,9 +81,9 @@ const App = () => {
       }
       crimesLst.push(currCrimes);
     }
-    console.log(crimesLst);
+    console.log("Safety check complete");
     const safestRouteIndex = crimesLst.indexOf(Math.min(...crimesLst));
-    plotSafestRoute(safestRouteIndex);
+    await plotSafestRoute(safestRouteIndex);
   };
 
   const plotSafestRoute = async (safestIndex) => {
@@ -216,7 +215,6 @@ const App = () => {
       }
     }
 
-    console.log(flattenedCrimeData);
 
     setCrimesDetected(true);
     setLoader(false);
@@ -331,7 +329,7 @@ const App = () => {
             progress={progress}
             pathCoordinates={pathCoordinates}
           />
-          {/* {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />} */}
+          {loader && <Loader type="spinner-cub"  title={"Mapping Crime data"} size={50} />}
         </div>
 
         <div style={{ flexGrow: 1, width: "100%" }}>
