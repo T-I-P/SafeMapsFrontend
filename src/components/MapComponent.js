@@ -31,6 +31,7 @@ const MapComponent = ({
   });
 
   const [selectedCrime, setSelectedCrime] = React.useState(null);
+  let timeoutId = null;
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading maps</div>;
@@ -47,8 +48,17 @@ const MapComponent = ({
         <Marker
           key={idx}
           position={{ lat: crime.lat, lng: crime.lng }}
-          onMouseOver={() => setSelectedCrime(crime)}
-          onMouseOut={() => setSelectedCrime(null)}
+          onMouseOver={() => {
+            if (timeoutId !== null) {
+              clearTimeout(timeoutId);
+            }
+            setSelectedCrime(crime);
+          }}
+          onMouseOut={() => {
+            timeoutId = setTimeout(() => {
+              setSelectedCrime(null);
+            }, 500); // Set the delay as needed
+          }}
           icon={{
             url: crime.iconUrl,
             scaledSize: new window.google.maps.Size(15, 15),
