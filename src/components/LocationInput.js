@@ -3,6 +3,7 @@ import Location from "./location";
 import { Button } from "react-bootstrap";
 //import { FaRoute, FaShieldAlt } from 'react-icons/fa';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./locationInput.css";
 
 const LocationInput = ({
   setOffice,
@@ -15,7 +16,7 @@ const LocationInput = ({
   pathCoordinates,
 }) => {
   const buttonStyle = {
-    backgroundColor: "white", // Set background color to white
+    // Set background color to white
     color: "black", // Set text color to black
     borderColor: "#ccc", // Optional: add a light gray border
     boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Optional: add a subtle shadow for better UI
@@ -29,17 +30,21 @@ const LocationInput = ({
         //     mapRef.current.panTo(position);
         //   }}
         setOffice={setOffice}
-        placeholder={"Enter Source Location"}
+        placeholder={"Enter Source"}
       />
       <Location
         key="destination"
         setOffice={(position) => {
           setDestination(position);
         }}
-        placeholder={"Enter Destination Location"}
+        placeholder={"Enter Destination"}
       />
 
-      <Button onClick={fetchDirections} className="my-2" style={buttonStyle}>
+      <Button onClick={fetchDirections} className="my-1" style={buttonStyle}>
+        <img
+          src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-arrow-right-vector-icon-png-image_1027236.jpg "
+          className="direction"
+        />
         Get Directions
       </Button>
       <Button
@@ -48,6 +53,10 @@ const LocationInput = ({
         className="my-2"
         style={buttonStyle}
       >
+        <img
+          src="https://spng.pngfind.com/pngs/s/114-1147878_location-poi-pin-marker-position-red-map-google.png "
+          className="safest"
+        />
         Get Safest Route
       </Button>
     </div>

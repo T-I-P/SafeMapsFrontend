@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import LogoSafeMap1 from "./LogoSafeMap1.png";
 import LogoSafeMapWritten from "./LogoWritten.png";
 import "./AccountSettings.css";
+import NavigationBar from "./components/navbar";
+import { Nav } from "react-bootstrap";
 
 const AccountSettings = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,27 +38,30 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="settings-container">
-      <h1>Account Settings</h1>
-      <img src={preview} alt="Profile Preview" className="profile-preview" />
-      <input
-        type="file"
-        onChange={handleFileInput}
-        accept="image/*"
-        style={{ display: "none" }}
-        id="fileInput"
-      />
-      <label htmlFor="fileInput" className="upload-button">
-        + Profile Picture
-      </label>
-      <button onClick={handleUpload}>Upload</button>
+    <>
+      <NavigationBar />
+      <div className="settings-container">
+        <h1>Account Settings</h1>
+        <img src={preview} alt="Profile Preview" className="profile-preview" />
+        <input
+          type="file"
+          onChange={handleFileInput}
+          accept="image/*"
+          style={{ display: "none" }}
+          id="fileInput"
+        />
+        <label htmlFor="fileInput" className="upload-button">
+          + Profile Picture
+        </label>
+        <button onClick={handleUpload}>Upload</button>
 
-      <p>Name: </p>
-      <p>User Name: </p>
-      <p>Birthday: </p>
+        <p>Name: </p>
+        <p>User Name: </p>
+        <p>Birthday: </p>
 
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    </>
   );
 };
 

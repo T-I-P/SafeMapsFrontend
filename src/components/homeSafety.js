@@ -5,6 +5,7 @@ import HomeLocation from "./HomeLocation";
 import HomeMap from "./homeMap";
 import { useLoadScript } from "@react-google-maps/api";
 import "./homesafety.css";
+import Loader from "react-js-loader";
 
 const HomeSafety = () => {
   const [office, setOffice] = useState(null);
@@ -78,50 +79,40 @@ const HomeSafety = () => {
 
     setLoader(true);
     const processedCoordinates = new Set();
-    for (let i = 0; i < pathCoordinates.length; i++) {
-      for (let j = 0; j < pathCoordinates[i].length; j += 20) {
-        const lat = pathCoordinates[i][j].lat;
-        const lng = pathCoordinates[i][j].lng;
+    const api_url = process.env.REACT_APP_FETCH_CRIME_DATA;
+    let convertedPathCoordinates = pathCoordinates.map((path) =>
+      path.map((point) => [point.lat, point.lng]),
+    );
+    const response = await fetch(api_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        route_list: convertedPathCoordinates,
+      }),
+    });
 
-        const coordinateKey = `${lat},${lng}`;
+    const allCrimes = await response.json();
+    const crimeData = allCrimes.data;
+    const flattenedCrimeData = crimeData.flat().map((crime) => ({
+      lat: parseFloat(crime.latitude),
+      lng: parseFloat(crime.longitude),
+    }));
 
-        if (processedCoordinates.has(coordinateKey)) {
-          continue;
+    for (let i = 0; i < crimeData.length; i++) {
+      for (let j = 0; j < crimeData[i].length; j++) {
+        for (let k = 0; k < crimeData[i][j].crimeData.length; k++) {
+          const crime = crimeData[i][j].crimeData[k];
+          const temp = {
+            lat: parseFloat(crime.lat),
+            lng: parseFloat(crime.lon),
+          };
+          setCrimes((prevCrimes) => [...prevCrimes, temp]);
         }
-
-        processedCoordinates.add(coordinateKey);
-        const response = await fetch("http://127.0.0.1:3000/fetchCrimeData", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            latitude: pathCoordinates[i][j].lat,
-            longitude: pathCoordinates[i][j].lng,
-            radius: 0.02,
-          }),
-        });
-        const crimeData = await response.json();
-        let newCrimes = [...crimes];
-
-        if (crimeData.data !== undefined) {
-          for (let k = 0; k < crimeData.data.length; k++) {
-            const temp = {
-              lat: parseFloat(crimeData.data[k].lat),
-              lng: parseFloat(crimeData.data[k].lon),
-            };
-            newCrimes.push(temp);
-          }
-        }
-        setCrimes((prevCrimes) => [...prevCrimes, ...newCrimes]);
-        if (j > 17) {
-          await new Promise((resolve) => setTimeout(resolve, 6000));
-        } else {
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-        }
-        setProgress((prevProgress) => prevProgress + 10);
       }
     }
+
     setCrimesDetected(true);
     setLoader(false);
   };
@@ -154,6 +145,7 @@ const HomeSafety = () => {
                 directions: response,
                 routeIndex: response.routes.indexOf(route),
                 polylineOptions: { strokeColor: color },
+                suppressMarkers: true,
               });
             const currentpathCoordinates = route.overview_path.map((latLng) => {
               return { lat: latLng.lat(), lng: latLng.lng() };
@@ -258,6 +250,13 @@ const HomeSafety = () => {
                 {" "}
                 Get Safest House{" "}
               </button>
+              {loader && (
+                <Loader
+                  type="spinner-cub"
+                  title={"Mapping Crime data"}
+                  size={50}
+                />
+              )}
             </center>
           </div>
         </div>
