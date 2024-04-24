@@ -30,6 +30,7 @@ const MapComponent = ({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
+
   const [selectedCrime, setSelectedCrime] = React.useState(null);
 
   if (loadError) return <div>Error loading maps</div>;
@@ -47,11 +48,13 @@ const MapComponent = ({
         <Marker
           key={idx}
           position={{ lat: crime.lat, lng: crime.lng }}
-          onClick={() => setSelectedCrime(crime)}
+          onMouseOver={() => setSelectedCrime(crime)}
+          onMouseOut={() => setSelectedCrime(null)}
+
           icon={{
-            url: "https://th.bing.com/th/id/OIP.j22qDUlzZ-Urfey4qX1gyAHaHa?rs=1&pid=ImgDetMain",
-            scaledSize: new window.google.maps.Size(15, 15),
-          }}
+            url: crime.iconUrl,
+            scaledSize: new window.google.maps.Size(15, 15)}
+          }
         />
       ))}
       {selectedCrime && (
@@ -60,16 +63,11 @@ const MapComponent = ({
           onCloseClick={() => setSelectedCrime(null)}
         >
           <div>
-            <h2>{selectedCrime.InfoWindow}</h2>
-            <h2>{selectedCrime.type}</h2>
-            <p>{selectedCrime.description}</p>
-            <p>
-              <strong>Date:</strong> {selectedCrime.date}
-            </p>
+            <p>{selectedCrime.date}</p>
+            <p>{selectedCrime.type}</p>
           </div>
         </InfoWindow>
       )}
-
       {/* <div>
           <Marker position={office} />
           {" "}

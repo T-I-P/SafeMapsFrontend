@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import LogoSafeMap1 from "./LogoSafeMap1.png";
 import LogoSafeMapWritten from "./LogoWritten.png";
 import "./AccountSettings.css";
+import NavigationBar from "./components/navbar";
+import { Nav } from "react-bootstrap";
 
 const AccountSettings = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,7 +38,10 @@ const AccountSettings = () => {
   };
 
   return (
+    <>
+    <NavigationBar />
     <div className="settings-container">
+      
       <h1>Account Settings</h1>
       <img src={preview} alt="Profile Preview" className="profile-preview" />
       <input
@@ -57,6 +62,7 @@ const AccountSettings = () => {
 
       <button onClick={handleLogout}>Logout</button>
     </div>
+    </>
   );
 };
 

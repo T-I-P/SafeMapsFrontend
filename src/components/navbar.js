@@ -13,18 +13,16 @@ function NavigationBar() {
     e.preventDefault();
     navigate("/homeSafety");
   };
+
   return (
     <Navbar bg="dark" data-bs-theme="dark" expand="lg">
       <Container className="navbar-container">
-        <Navbar.Brand className="navlink-1" href="#home">
+        <Navbar.Brand className="navlink-1" href="/app">
           Home
         </Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link className="navlink-2" onClick={handleHomeSafety}>
             Home Safety
-          </Nav.Link>
-          <Nav.Link className="navlink-3" href="#features">
-            Route Safety
           </Nav.Link>
           <Nav.Link className="navlink-4" href="/accountInfo">
             Account

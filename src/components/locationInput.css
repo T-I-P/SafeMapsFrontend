@@ -1,0 +1,27 @@
+.my-1{
+    background-color: lightblue;
+}
+.my-1:hover{
+    background-color: lightseagreen;
+}
+.my-2:disabled{
+    background-color: white;
+    margin-left:2%
+}
+.my-2:hover{
+    background-color: lightgreen;
+    margin-left:2%
+}
+.my-2{
+    background-color: lightcyan;
+    margin-left:2%
+}
+.direction{
+    width: 30px;
+    padding-right: 5%;
+}
+
+.safest{
+    padding-right: 5%;
+    width: 30px;
+}
