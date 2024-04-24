@@ -50,7 +50,7 @@ const App = () => {
 
   const checkSafety = async () => {
     const R = 6371; // Radius of the earth in km
-    const maxDistance = 5; // Max distance in km
+    const maxDistance = 0.5; // Max distance in km
 
     let crimesLst = [];
     for (let path of routes) {
