@@ -198,7 +198,7 @@ const App = () => {
     let convertedPathCoordinates = pathCoordinates.map((path) =>
       path.map((point) => [point.lat, point.lng]),
     );
-    console.log(convertedPathCoordinates)
+    console.log(convertedPathCoordinates);
     const response = await fetch(api_url, {
       method: "POST",
       headers: {
@@ -210,14 +210,14 @@ const App = () => {
     });
 
     const allCrimes = await response.json();
-    console.log(allCrimes.data)
+    console.log(allCrimes.data);
     const crimeData = allCrimes.data;
     const flattenedCrimeData = crimeData.flat().map((crime) => ({
       lat: parseFloat(crime.latitude),
       lng: parseFloat(crime.longitude),
     }));
 
-    let tempCrimes = new Set()
+    let tempCrimes = new Set();
     for (let i = 0; i < crimeData.length; i++) {
       for (let j = 0; j < crimeData[i].length; j++) {
         for (let k = 0; k < crimeData[i][j].crimeData.length; k++) {
@@ -230,7 +230,6 @@ const App = () => {
             iconUrl: getIconUrl(crime.type),
           };
           tempCrimes.add(JSON.stringify(temp));
-          
         }
       }
     }
