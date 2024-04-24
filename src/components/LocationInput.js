@@ -50,21 +50,6 @@ const LocationInput = ({
       >
         Get Safest Route
       </Button>
-
-      {loader && (
-        <div>
-          <center>
-            <progress
-              className="square-progress-bar"
-              value={progress}
-              max={pathCoordinates[0].length}
-            />
-            <span className="progress-text">
-              {((progress / pathCoordinates[0].length) * 100).toFixed(0)}%
-            </span>
-          </center>
-        </div>
-      )}
     </div>
   );
 };
