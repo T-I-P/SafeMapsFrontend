@@ -65,7 +65,7 @@ const MapComponent = ({
           }}
         />
       ))}
-            {selectedCrime && (
+      {selectedCrime && (
         <InfoWindow
           position={{ lat: selectedCrime.lat, lng: selectedCrime.lng }}
           onCloseClick={() => setSelectedCrime(null)}
